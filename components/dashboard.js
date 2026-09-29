@@ -24,7 +24,7 @@ import {
 
 const auth = getAuth(db.app);
 
-const COLLAPSE_STORAGE_KEY = "acocollo_i2_grupos_colapsados";
+const COLLAPSE_STORAGE_KEY = "I.E.P. 70726_grupos_colapsados";
 
 const ESTADO_COLOR = {
   completa: "#e5b80b",
@@ -194,7 +194,7 @@ export default function Dashboard() {
   function handleExportarArea(areaNombre, carpetasDelArea, tipoForzado) {
     setExportandoArea(areaNombre);
     try {
-      const usuarioFirma = usuarioGoogle?.email || usuarioGoogle?.displayName || "Sistema Acocollo I-2";
+      const usuarioFirma = usuarioGoogle?.email || usuarioGoogle?.displayName || "Sistema I.E.P. 70726 I-2";
       const listaFiltrada = filtrarCarpetasParaExportar(carpetasDelArea, tipoForzado);
       generarReportePorArea(areaNombre, listaFiltrada, { usuarioFirma });
     } finally {
@@ -205,7 +205,7 @@ export default function Dashboard() {
   async function handleExportarGlobal(tipoForzado) {
     setExportandoGlobal(true);
     try {
-      const usuarioFirma = usuarioGoogle?.email || usuarioGoogle?.displayName || "Sistema Acocollo I-2";
+      const usuarioFirma = usuarioGoogle?.email || usuarioGoogle?.displayName || "Sistema I.E.P. 70726 I-2";
       const listaFiltrada = filtrarCarpetasParaExportar(carpetas, tipoForzado);
       generarReporteConsolidadoGlobal(listaFiltrada, { usuarioFirma });
     } catch (err) {
@@ -411,14 +411,14 @@ export default function Dashboard() {
   const areaLabel = filtroArea !== "Todas" ? ` · ${filtroArea}` : "";
 
   return (
-    <div className="acocollo-fondo-animado" style={{ minHeight: "100vh", width: "100%", paddingBottom: 60 }}>
+    <div className="I.E.P. 70726-fondo-animado" style={{ minHeight: "100vh", width: "100%", paddingBottom: 60 }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-        .acocollo-fondo-animado, .acocollo-fondo-animado * {
+        .I.E.P. 70726-fondo-animado, .I.E.P. 70726-fondo-animado * {
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-        .acocollo-fondo-animado {
+        .I.E.P. 70726-fondo-animado {
           background: linear-gradient(
             -45deg,
             #0c1015,
@@ -430,17 +430,17 @@ export default function Dashboard() {
             #0c1015
           );
           background-size: 500% 500%;
-          animation: acocolloGradiente 5s ease infinite;
+          animation: I.E.P. 70726Gradiente 5s ease infinite;
         }
-        @keyframes acocolloGradiente {
+        @keyframes I.E.P. 70726Gradiente {
           0%   { background-position: 0% 50%; }
           50%  { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .acocollo-fondo-animado { animation: none; }
+          .I.E.P. 70726-fondo-animado { animation: none; }
         }
-        .acocollo-header-sticky {
+        .I.E.P. 70726-header-sticky {
           position: sticky;
           top: 0;
           z-index: 40;
@@ -449,99 +449,99 @@ export default function Dashboard() {
           border-bottom: 3.5px solid #e5b80b;
           box-shadow: 0 6px 25px rgba(0,0,0,.7);
         }
-        .acocollo-fade-in {
-          animation: acocolloFadeIn .32s cubic-bezier(.16,1,.3,1) both;
+        .I.E.P. 70726-fade-in {
+          animation: I.E.P. 70726FadeIn .32s cubic-bezier(.16,1,.3,1) both;
         }
-        @keyframes acocolloFadeIn {
+        @keyframes I.E.P. 70726FadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .acocollo-stagger-item {
-          animation: acocolloStaggerAnim .35s cubic-bezier(.16,1,.3,1) both;
+        .I.E.P. 70726-stagger-item {
+          animation: I.E.P. 70726StaggerAnim .35s cubic-bezier(.16,1,.3,1) both;
         }
-        @keyframes acocolloStaggerAnim {
+        @keyframes I.E.P. 70726StaggerAnim {
           from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .acocollo-barra-avance {
-          animation: acocolloRayas 0.8s linear infinite;
+        .I.E.P. 70726-barra-avance {
+          animation: I.E.P. 70726Rayas 0.8s linear infinite;
         }
-        @keyframes acocolloRayas {
+        @keyframes I.E.P. 70726Rayas {
           from { background-position: 0 0, 0 0; }
           to   { background-position: 36px 0, 0 0; }
         }
-        .acocollo-fondo-animado button:not(:disabled) {
+        .I.E.P. 70726-fondo-animado button:not(:disabled) {
           transition: transform .18s cubic-bezier(.2,.8,.2,1), filter .18s ease, box-shadow .18s ease;
         }
-        .acocollo-fondo-animado button:not(:disabled):hover {
+        .I.E.P. 70726-fondo-animado button:not(:disabled):hover {
           transform: translateY(-2px) scale(1.02);
           filter: brightness(1.18);
           box-shadow: 0 6px 20px rgba(229,184,11,.3);
         }
-        .acocollo-fondo-animado button:not(:disabled):active {
+        .I.E.P. 70726-fondo-animado button:not(:disabled):active {
           transform: translateY(0) scale(0.97);
           filter: brightness(0.95);
         }
-        .acocollo-tarjeta-viva {
-          animation: acocolloTarjetaEntrada .5s cubic-bezier(.25,.9,.35,1.25) both;
+        .I.E.P. 70726-tarjeta-viva {
+          animation: I.E.P. 70726TarjetaEntrada .5s cubic-bezier(.25,.9,.35,1.25) both;
           transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
         }
-        .acocollo-tarjeta-viva:hover {
+        .I.E.P. 70726-tarjeta-viva:hover {
           transform: translateY(-3px);
           border-color: #e5b80b !important;
           box-shadow: 0 8px 25px rgba(229,184,11,.25) !important;
         }
-        @keyframes acocolloTarjetaEntrada {
+        @keyframes I.E.P. 70726TarjetaEntrada {
           from { opacity: 0; transform: translateY(10px) scale(.96); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .acocollo-celda-heatmap {
-          animation: acocolloCeldaEntrada .4s ease both;
+        .I.E.P. 70726-celda-heatmap {
+          animation: I.E.P. 70726CeldaEntrada .4s ease both;
         }
-        @keyframes acocolloCeldaEntrada {
+        @keyframes I.E.P. 70726CeldaEntrada {
           from { opacity: 0; transform: scale(.4); }
           to   { opacity: 1; transform: scale(1); }
         }
-        .acocollo-celda-heatmap:hover {
+        .I.E.P. 70726-celda-heatmap:hover {
           transform: scale(1.35);
           transition: transform .12s ease;
           box-shadow: 0 0 12px rgba(229,184,11,1);
           z-index: 70;
         }
-        .acocollo-celda-hoy {
+        .I.E.P. 70726-celda-hoy {
           position: relative;
         }
-        .acocollo-celda-hoy::after {
+        .I.E.P. 70726-celda-hoy::after {
           content: "";
           position: absolute;
           inset: 0;
           border-radius: inherit;
           border: 2px solid #e5b80b;
-          animation: acocolloHoyPulso 1.4s ease-out infinite;
+          animation: I.E.P. 70726HoyPulso 1.4s ease-out infinite;
           pointer-events: none;
         }
-        @keyframes acocolloHoyPulso {
+        @keyframes I.E.P. 70726HoyPulso {
           0%   { transform: scale(1); opacity: 1; }
           100% { transform: scale(2.2); opacity: 0; }
         }
-        .acocollo-modo-transicion {
-          animation: acocolloModoEntrada .35s cubic-bezier(.2,.85,.35,1.15) both;
+        .I.E.P. 70726-modo-transicion {
+          animation: I.E.P. 70726ModoEntrada .35s cubic-bezier(.2,.85,.35,1.15) both;
         }
-        @keyframes acocolloModoEntrada {
+        @keyframes I.E.P. 70726ModoEntrada {
           from { opacity: 0; transform: scale(.985); }
           to   { opacity: 1; transform: scale(1); }
         }
-        .acocollo-barra-flotante {
-          animation: acocolloFlotarIn .3s cubic-bezier(.16,1,.3,1) both;
+        .I.E.P. 70726-barra-flotante {
+          animation: I.E.P. 70726FlotarIn .3s cubic-bezier(.16,1,.3,1) both;
         }
-        @keyframes acocolloFlotarIn {
+        @keyframes I.E.P. 70726FlotarIn {
           from { opacity: 0; transform: translate(-50%, 20px); }
           to   { opacity: 1; transform: translate(-50%, 0); }
         }
       `}</style>
 
       {/* ENCABEZADO SUPERIOR FIJO */}
-      <div className="acocollo-header-sticky">
+      <div className="I.E.P. 70726-header-sticky">
         <div
           style={{
             maxWidth: modoPresentacion ? "100%" : 1500,
@@ -563,7 +563,7 @@ export default function Dashboard() {
             />
             <div>
               <h1 style={{ fontSize: modoPresentacion ? 36 : 22, marginBottom: 2, fontWeight: 800, letterSpacing: -0.3, color: "#e5b80b", textShadow: "0 0 18px rgba(229,184,11,.7)" }}>
-                Expediente Técnico — C.S. ACOCOLLO I-2
+                Expediente Técnico — C.S. I.E.P. 70726 I-2
               </h1>
               <p style={{ color: "#a8dadc", marginTop: 0, marginBottom: 2, fontSize: 13 }}>
                 Estado en tiempo real de la carga de documentación
@@ -733,7 +733,7 @@ export default function Dashboard() {
             }}
           >
             <div
-              className="acocollo-barra-avance"
+              className="I.E.P. 70726-barra-avance"
               style={{
                 width: `${pct}%`,
                 height: "100%",
@@ -839,7 +839,7 @@ export default function Dashboard() {
 
         {modoPresentacion && (
           <div
-            className="acocollo-fade-in acocollo-modo-transicion"
+            className="I.E.P. 70726-fade-in I.E.P. 70726-modo-transicion"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
@@ -873,7 +873,7 @@ export default function Dashboard() {
         )}
 
         {modoPresentacion && areas.length > 0 && (
-          <div className="acocollo-fade-in acocollo-modo-transicion" style={{ marginTop: 36 }}>
+          <div className="I.E.P. 70726-fade-in I.E.P. 70726-modo-transicion" style={{ marginTop: 36 }}>
             <div style={{ fontSize: 16, fontWeight: 700, color: "#ffffff", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ color: "#e5b80b" }}>»» </span>AVANCE POR ESPECIALIDAD, POR ÁREA
             </div>
@@ -944,7 +944,7 @@ export default function Dashboard() {
         )}
 
         {!modoPresentacion && (
-        <div className="acocollo-modo-transicion" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 24 }}>
+        <div className="I.E.P. 70726-modo-transicion" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 24 }}>
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
               <h2 style={{ fontSize: 16, color: "#ffffff", margin: 0 }}>
@@ -1073,7 +1073,7 @@ export default function Dashboard() {
 
             <div
               key={`${filtroEstado}-${filtroArea}-${busqueda}`}
-              className="acocollo-fade-in"
+              className="I.E.P. 70726-fade-in"
               style={{
                 background: "#0c1015",
                 borderRadius: 12,
@@ -1084,7 +1084,7 @@ export default function Dashboard() {
             >
               {visibles.length === 0 && (
                 <div
-                  className="acocollo-fade-in"
+                  className="I.E.P. 70726-fade-in"
                   style={{
                     display: "flex",
                     flexDirection: "column",
@@ -1127,7 +1127,7 @@ export default function Dashboard() {
                   return (
                     <div 
                       key={key} 
-                      className="acocollo-stagger-item"
+                      className="I.E.P. 70726-stagger-item"
                       style={{ animationDelay: `${grupoIndex * 35}ms` }}
                     >
                       <div
@@ -1194,7 +1194,7 @@ export default function Dashboard() {
                         return (
                           <div
                             key={c.id}
-                            className="acocollo-stagger-item"
+                            className="I.E.P. 70726-stagger-item"
                             onClick={() => window.open(driveUrl, "_blank", "noopener,noreferrer")}
                             style={{
                               padding: "12px 16px 12px 24px",
@@ -1342,7 +1342,7 @@ export default function Dashboard() {
 
       {/* BARRA DE ACCIONES FLOTANTE INTELIGENTE */}
       <div
-        className="acocollo-barra-flotante"
+        className="I.E.P. 70726-barra-flotante"
         style={{
           position: "fixed",
           bottom: 24,
@@ -1416,7 +1416,7 @@ export default function Dashboard() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="acocollo-fade-in"
+            className="I.E.P. 70726-fade-in"
             style={{
               background: "#141c24",
               border: "2.5px solid #e5b80b",
@@ -1575,7 +1575,7 @@ function EspecialidadMiniCard({ nombre, pct, total, incompletas = 0, vacias = 0,
 
   return (
     <div
-      className="acocollo-tarjeta-viva"
+      className="I.E.P. 70726-tarjeta-viva"
       style={{
         display: "flex",
         flexDirection: "column",
@@ -1783,7 +1783,7 @@ function Card({ label, value, color, grande }) {
   const valorAnimado = useCountUp(value);
   return (
     <div
-      className="acocollo-tarjeta-viva"
+      className="I.E.P. 70726-tarjeta-viva"
       style={{
         background: "#141c24",
         borderRadius: 12,
@@ -2036,7 +2036,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                 return (
                   <div
                     key={d.key}
-                    className={`acocollo-celda-heatmap${esHoy ? " acocollo-celda-hoy" : ""}`}
+                    className={`I.E.P. 70726-celda-heatmap${esHoy ? " I.E.P. 70726-celda-hoy" : ""}`}
                     onMouseEnter={(e) => mostrarTooltip(e, textoTooltip)}
                     onMouseLeave={() => setTooltip(null)}
                     onClick={() => abrirDetalleDia(d)}
@@ -2130,7 +2130,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="acocollo-fade-in"
+            className="I.E.P. 70726-fade-in"
             style={{
               background: "#141c24",
               border: "2.5px solid #e5b80b",
