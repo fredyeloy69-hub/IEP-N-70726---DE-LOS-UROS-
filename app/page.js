@@ -1391,7 +1391,7 @@ export default function Page() {
         {/* Sección de Tendencia de avance y Actividad */}
         <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: modoPresentacion ? 24 : 16, marginBottom: 32, alignItems: "stretch" }}>
           <TendenciaChart historial={historial} grande={modoPresentacion} actividadPorDia={actividadPorDia} />
-          <ActividadHeatmap actividadPorDia={actividadPorDia} diasCustom={rangoDiasHeatmap} grande={modoPresentacion} onMarcarCompleta={handleMarcarCompleta} marcandoId={marcandoId} />
+          <ActividadHeatmap areasValidas={areas} actividadPorDia={actividadPorDia} diasCustom={rangoDiasHeatmap} grande={modoPresentacion} onMarcarCompleta={handleMarcarCompleta} marcandoId={marcandoId} />
         </div>
         </>
         )}
@@ -2664,7 +2664,7 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
   );
 }
 
-function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
+function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande, areasValidas = [] }) {
   const DIAS = diasCustom;
   const [tooltip, setTooltip] = useState(null);
   const [tooltipPos, setTooltipPos] = useState(null);
@@ -2749,7 +2749,8 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
   // Carpeta madre (colegio) de un evento = primer tramo de su ruta
   function areaDeEvento(ev) {
     const r = ev.ruta || "";
-    return r.split(" / ")[0] || "Sin área";
+    // se quita el ".lnk" que traen los accesos directos de Drive en el nombre
+    return (r.split(" / ")[0] || "Sin área").replace(/\.lnk$/i, "").trim();
   }
 
   // areaNombre = null → todo el proyecto; si no, solo esa carpeta madre
@@ -2967,15 +2968,14 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                           const a = areaDeEvento(ev);
                           conteo[a] = (conteo[a] || 0) + 1;
                         }
+                        // Solo las carpetas madre reales del proyecto (los colegios), no cada especialidad
                         const opciones = [{ nombre: null, texto: "📁 Todo el proyecto", n: eventosDelDia.length }].concat(
-                          Object.keys(conteo)
-                            .sort()
-                            .map((a) => ({ nombre: a, texto: `🏫 ${a}`, n: conteo[a] }))
+                          areasValidas.map((a) => ({ nombre: a, texto: `🏫 ${a}`, n: conteo[a] || 0 }))
                         );
                         return opciones.map((o) => (
                           <button
                             key={o.nombre || "todo"}
-                            onClick={() => exportarPdfDia(o.nombre)}
+                            onClick={() => o.n > 0 && exportarPdfDia(o.nombre)}
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
@@ -2989,7 +2989,8 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                               border: "none",
                               borderBottom: "1px solid #8FD3F422",
                               color: "#CFEFFF",
-                              cursor: "pointer",
+                              opacity: o.n > 0 ? 1 : 0.45,
+                              cursor: o.n > 0 ? "pointer" : "not-allowed",
                             }}
                             onMouseEnter={(e) => (e.currentTarget.style.background = "#8FD3F422")}
                             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
