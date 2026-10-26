@@ -2672,6 +2672,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);
   const [eventosDelDia, setEventosDelDia] = useState(null);
   const [exportandoPdfDia, setExportandoPdfDia] = useState(false);
+  const [menuPdfDiaAbierto, setMenuPdfDiaAbierto] = useState(false);
 
   useEffect(() => {
     if (!tooltip) {
@@ -2745,13 +2746,23 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
     }
   }
 
-  function exportarPdfDia() {
+  // Carpeta madre (colegio) de un evento = primer tramo de su ruta
+  function areaDeEvento(ev) {
+    const r = ev.ruta || "";
+    return r.split(" / ")[0] || "Sin área";
+  }
+
+  // areaNombre = null → todo el proyecto; si no, solo esa carpeta madre
+  function exportarPdfDia(areaNombre = null) {
     if (!diaSeleccionado || !eventosDelDia || eventosDelDia.length === 0) return;
+    const lista = areaNombre ? eventosDelDia.filter((ev) => areaDeEvento(ev) === areaNombre) : eventosDelDia;
+    if (lista.length === 0) return;
+    setMenuPdfDiaAbierto(false);
     setExportandoPdfDia(true);
     // pequeña pausa para que el botón muestre "Generando..." antes de armar el PDF
     setTimeout(() => {
       try {
-        generarReporteActividadDiaPDF(formatearFechaLarga(diaSeleccionado.fecha), diaSeleccionado.key, eventosDelDia);
+        generarReporteActividadDiaPDF(formatearFechaLarga(diaSeleccionado.fecha), diaSeleccionado.key, lista, { areaNombre });
       } catch (err) {
         alert(`No se pudo generar el PDF: ${err.message}`);
       } finally {
@@ -2913,24 +2924,84 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
-                <button
-                  onClick={exportarPdfDia}
-                  disabled={exportandoPdfDia || !eventosDelDia || eventosDelDia.length === 0}
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 700,
-                    padding: "7px 14px",
-                    borderRadius: 8,
-                    border: "1.5px solid #8FD3F4",
-                    background: "#0F3558",
-                    color: "#CFEFFF",
-                    cursor: exportandoPdfDia || !eventosDelDia || eventosDelDia.length === 0 ? "not-allowed" : "pointer",
-                    opacity: !eventosDelDia || eventosDelDia.length === 0 ? 0.5 : 1,
-                  }}
-                  title="Exportar este registro del día a PDF (quién, a qué hora, en qué carpeta y tipo de archivo)"
-                >
-                  {exportandoPdfDia ? "Generando PDF..." : "📄 Exportar PDF"}
-                </button>
+                <div style={{ position: "relative" }}>
+                  <button
+                    onClick={() => setMenuPdfDiaAbierto((v) => !v)}
+                    disabled={exportandoPdfDia || !eventosDelDia || eventosDelDia.length === 0}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 700,
+                      padding: "7px 14px",
+                      borderRadius: 8,
+                      border: "1.5px solid #8FD3F4",
+                      background: "#0F3558",
+                      color: "#CFEFFF",
+                      cursor: exportandoPdfDia || !eventosDelDia || eventosDelDia.length === 0 ? "not-allowed" : "pointer",
+                      opacity: !eventosDelDia || eventosDelDia.length === 0 ? 0.5 : 1,
+                    }}
+                    title="Exportar este registro del día a PDF (quién, a qué hora, en qué carpeta y tipo de archivo)"
+                  >
+                    {exportandoPdfDia ? "Generando PDF..." : `📄 Exportar PDF ${menuPdfDiaAbierto ? "▲" : "▼"}`}
+                  </button>
+                  {menuPdfDiaAbierto && eventosDelDia && eventosDelDia.length > 0 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "calc(100% + 6px)",
+                        right: 0,
+                        zIndex: 60,
+                        background: "#06182B",
+                        border: "2px solid #8FD3F4",
+                        borderRadius: 12,
+                        minWidth: 300,
+                        boxShadow: "0 8px 24px rgba(0,0,0,.6)",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div style={{ padding: "9px 14px", fontSize: 11, fontWeight: 700, color: "#CFEFFF", borderBottom: "1px solid #8FD3F455", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                        Elige qué exportar
+                      </div>
+                      {(() => {
+                        const conteo = {};
+                        for (const ev of eventosDelDia) {
+                          const a = areaDeEvento(ev);
+                          conteo[a] = (conteo[a] || 0) + 1;
+                        }
+                        const opciones = [{ nombre: null, texto: "📁 Todo el proyecto", n: eventosDelDia.length }].concat(
+                          Object.keys(conteo)
+                            .sort()
+                            .map((a) => ({ nombre: a, texto: `🏫 ${a}`, n: conteo[a] }))
+                        );
+                        return opciones.map((o) => (
+                          <button
+                            key={o.nombre || "todo"}
+                            onClick={() => exportarPdfDia(o.nombre)}
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              gap: 12,
+                              width: "100%",
+                              textAlign: "left",
+                              padding: "11px 14px",
+                              fontSize: 13,
+                              fontWeight: 600,
+                              background: "transparent",
+                              border: "none",
+                              borderBottom: "1px solid #8FD3F422",
+                              color: "#CFEFFF",
+                              cursor: "pointer",
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "#8FD3F422")}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                          >
+                            <span>{o.texto}</span>
+                            <span style={{ opacity: 0.7 }}>{o.n}</span>
+                          </button>
+                        ));
+                      })()}
+                    </div>
+                  )}
+                </div>
                 <button
                   onClick={() => setDiaSeleccionado(null)}
                   style={{
