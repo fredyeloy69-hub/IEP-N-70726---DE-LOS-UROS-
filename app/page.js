@@ -12,8 +12,8 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { generarReportePorArea, generarReporteConsolidadoGlobal } from "../lib/exportarReporte";
-import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion } from "../lib/exportarExcel";
+import { generarReportePorArea, generarReporteConsolidadoGlobal, generarReporteActividadDiaPDF } from "../lib/exportarReporte";
+import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion, generarHistorialActividadExcel } from "../lib/exportarExcel";
 import { LOGO_PUNO_BASE64 } from "../lib/logoPuno";
 import {
   getAuth,
@@ -138,6 +138,8 @@ export default function Page() {
   const [exportandoArea, setExportandoArea] = useState(null);
   const [exportandoExcelArea, setExportandoExcelArea] = useState(null);
   const [exportandoMaterial, setExportandoMaterial] = useState(null);
+  const [menuMaterialAbierto, setMenuMaterialAbierto] = useState(false);
+  const [exportandoHistorial, setExportandoHistorial] = useState(false);
   const [menuSeparadoresAbierto, setMenuSeparadoresAbierto] = useState(false);
   const [exportandoSeparadores, setExportandoSeparadores] = useState(null);
   const [menuListaGeneralAbierto, setMenuListaGeneralAbierto] = useState(false);
@@ -283,10 +285,42 @@ export default function Page() {
     }
   }
 
+  // Historial de actividad: baja TODOS los eventos de Firestore (no solo los 50
+  // que se ven en pantalla) y los exporta a Excel, del más reciente al más antiguo.
+  async function handleExportarHistorial() {
+    setExportandoHistorial(true);
+    try {
+      const snap = await getDocs(query(collection(db, "eventos"), orderBy("timestamp", "desc")));
+      const lista = snap.docs.map((d) => {
+        const e = d.data();
+        return {
+          tipo: e.tipo,
+          item: e.item,
+          ruta: e.ruta,
+          usuario: e.usuario,
+          fecha: e.timestamp?.toDate ? e.timestamp.toDate() : null,
+        };
+      });
+      if (lista.length === 0) {
+        alert("Todavía no hay actividad registrada para exportar.");
+        return;
+      }
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Tiempo de espera agotado al generar el Excel")), 45000)
+      );
+      await Promise.race([generarHistorialActividadExcel(lista), timeoutPromise]);
+    } catch (err) {
+      alert(`No se pudo exportar el historial: ${err.message}`);
+    } finally {
+      setExportandoHistorial(false);
+    }
+  }
+
   // Material de impresión: cuenta hojas A4/A3/A2/A1/A0, siempre con TODAS
   // las carpetas del área (es un conteo de material, no de avance).
   async function handleExportarMaterialImpresion(areaNombre, carpetasDelArea) {
     setExportandoMaterial(areaNombre);
+    setMenuMaterialAbierto(false);
     try {
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error("Tiempo de espera agotado al generar el Excel")), 10000)
@@ -958,6 +992,105 @@ export default function Page() {
               )}
             </div>
 
+            {/* Material de impresión: lista desplegable de las carpetas madre */}
+            <div style={{ position: "relative" }}>
+              <button
+                onClick={() => setMenuMaterialAbierto((v) => !v)}
+                style={{
+                  fontSize: 13,
+                  fontWeight: 800,
+                  padding: "14px 18px",
+                  borderRadius: 14,
+                  border: "2px solid #E2B659",
+                  background: "linear-gradient(135deg,#2B2008,#0C2B4A)",
+                  color: "#F6E1A8",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  whiteSpace: "nowrap",
+                  boxShadow: "0 0 16px rgba(226,182,89,.35)",
+                  letterSpacing: 0.2,
+                }}
+                title="Material de impresión (hojas A4/A3/A2/A1/A0) por carpeta madre"
+              >
+                <span style={{ fontSize: 16 }}>🖨️</span>
+                MATERIAL DE IMPRESIÓN
+                <span style={{ fontSize: 11, opacity: 0.8 }}>{menuMaterialAbierto ? "▲" : "▼"}</span>
+              </button>
+
+              {menuMaterialAbierto && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 6px)",
+                    left: 0,
+                    zIndex: 50,
+                    background: "#1E1606",
+                    border: "2px solid #E2B659",
+                    borderRadius: 12,
+                    minWidth: 260,
+                    boxShadow: "0 8px 24px rgba(0,0,0,.5)",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div style={{ padding: "9px 14px", fontSize: 11, fontWeight: 700, color: "#F6E1A8", borderBottom: "1px solid #E2B65955", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                    Elige la carpeta madre
+                  </div>
+                  {areas.map((a) => (
+                    <button
+                      key={a}
+                      onClick={() => handleExportarMaterialImpresion(a, carpetasPorArea[a] || [])}
+                      disabled={exportandoMaterial === a}
+                      style={{
+                        display: "block",
+                        width: "100%",
+                        textAlign: "left",
+                        padding: "11px 14px",
+                        fontSize: 13,
+                        fontWeight: 600,
+                        background: "transparent",
+                        border: "none",
+                        borderBottom: "1px solid #E2B65922",
+                        color: exportandoMaterial === a ? "#8A7327" : "#F6E1A8",
+                        cursor: exportandoMaterial === a ? "not-allowed" : "pointer",
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#E2B65922")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    >
+                      🖨️ {exportandoMaterial === a ? `Generando ${a}...` : a}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Historial completo de actividad */}
+            <button
+              onClick={handleExportarHistorial}
+              disabled={exportandoHistorial}
+              style={{
+                fontSize: 13,
+                fontWeight: 800,
+                padding: "14px 18px",
+                borderRadius: 14,
+                border: "2px solid #8FD3F4",
+                background: "linear-gradient(135deg,#0F3558,#0C2B4A)",
+                color: "#CFEFFF",
+                cursor: exportandoHistorial ? "not-allowed" : "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                whiteSpace: "nowrap",
+                boxShadow: "0 0 16px rgba(143,211,244,.3)",
+                letterSpacing: 0.2,
+              }}
+              title="Exporta a Excel TODO el historial de actividad (subidas, reemplazos, borrados, carpetas)"
+            >
+              <span style={{ fontSize: 16 }}>🕘</span>
+              {exportandoHistorial ? "GENERANDO HISTORIAL..." : "EXPORTAR HISTORIAL"}
+            </button>
+
             <button
               onClick={() => {
                 const entrando = !modoPresentacion;
@@ -1553,7 +1686,7 @@ export default function Page() {
                     style={{
                       fontSize: 13,
                       padding: "8px 16px",
-                      borderRadius: 0,
+                      borderRadius: "0 20px 20px 0",
                       border: "1.5px solid #E2B659",
                       borderLeft: "none",
                       background: "#0C2B4A",
@@ -1564,24 +1697,6 @@ export default function Page() {
                     title={`Exportar reporte Excel de ${a}`}
                   >
                     📊 {exportandoExcelArea === a ? "Generando..." : "Excel"}
-                  </button>
-                  <button
-                    onClick={() => handleExportarMaterialImpresion(a, carpetasPorArea[a] || [])}
-                    disabled={exportandoMaterial === a}
-                    style={{
-                      fontSize: 13,
-                      padding: "8px 16px",
-                      borderRadius: "0 20px 20px 0",
-                      border: "1.5px solid #E2B659",
-                      borderLeft: "none",
-                      background: "#0C2B4A",
-                      color: exportandoMaterial === a ? "#AFCBE3" : "#e5b80b",
-                      fontWeight: 600,
-                      cursor: exportandoMaterial === a ? "not-allowed" : "pointer",
-                    }}
-                    title={`Exportar material de impresión (hojas A4/A3/A2/A1/A0) de ${a}`}
-                  >
-                    🖨️ {exportandoMaterial === a ? "Generando..." : "Material de Impresión"}
                   </button>
                 </div>
               ))}
@@ -2614,6 +2729,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
   const tooltipRef = useRef(null);
   const [diaSeleccionado, setDiaSeleccionado] = useState(null);
   const [eventosDelDia, setEventosDelDia] = useState(null);
+  const [exportandoPdfDia, setExportandoPdfDia] = useState(false);
 
   useEffect(() => {
     if (!tooltip) {
@@ -2685,6 +2801,21 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
     } catch {
       setEventosDelDia([]);
     }
+  }
+
+  function exportarPdfDia() {
+    if (!diaSeleccionado || !eventosDelDia || eventosDelDia.length === 0) return;
+    setExportandoPdfDia(true);
+    // pequeña pausa para que el botón muestre "Generando..." antes de armar el PDF
+    setTimeout(() => {
+      try {
+        generarReporteActividadDiaPDF(formatearFechaLarga(diaSeleccionado.fecha), diaSeleccionado.key, eventosDelDia);
+      } catch (err) {
+        alert(`No se pudo generar el PDF: ${err.message}`);
+      } finally {
+        setExportandoPdfDia(false);
+      }
+    }, 60);
   }
 
   function mostrarTooltip(e, texto) {
@@ -2839,20 +2970,40 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                   {diaSeleccionado.count} evento{diaSeleccionado.count !== 1 ? "s" : ""} registrado{diaSeleccionado.count !== 1 ? "s" : ""}
                 </div>
               </div>
-              <button
-                onClick={() => setDiaSeleccionado(null)}
-                style={{
-                  fontSize: 14,
-                  padding: "7px 14px",
-                  borderRadius: 8,
-                  border: "1.5px solid #E2B659",
-                  background: "transparent",
-                  color: "#AFCBE3",
-                  cursor: "pointer",
-                }}
-              >
-                ✕ Cerrar
-              </button>
+              <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                <button
+                  onClick={exportarPdfDia}
+                  disabled={exportandoPdfDia || !eventosDelDia || eventosDelDia.length === 0}
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    padding: "7px 14px",
+                    borderRadius: 8,
+                    border: "1.5px solid #8FD3F4",
+                    background: "#0F3558",
+                    color: "#CFEFFF",
+                    cursor: exportandoPdfDia || !eventosDelDia || eventosDelDia.length === 0 ? "not-allowed" : "pointer",
+                    opacity: !eventosDelDia || eventosDelDia.length === 0 ? 0.5 : 1,
+                  }}
+                  title="Exportar este registro del día a PDF (quién, a qué hora, en qué carpeta y tipo de archivo)"
+                >
+                  {exportandoPdfDia ? "Generando PDF..." : "📄 Exportar PDF"}
+                </button>
+                <button
+                  onClick={() => setDiaSeleccionado(null)}
+                  style={{
+                    fontSize: 14,
+                    padding: "7px 14px",
+                    borderRadius: 8,
+                    border: "1.5px solid #E2B659",
+                    background: "transparent",
+                    color: "#AFCBE3",
+                    cursor: "pointer",
+                  }}
+                >
+                  ✕ Cerrar
+                </button>
+              </div>
             </div>
             <div style={{ overflowY: "auto", padding: "16px 26px 26px", flex: 1 }}>
               {eventosDelDia === null ? (
