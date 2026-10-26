@@ -13,7 +13,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { generarReportePorArea, generarReporteConsolidadoGlobal, generarReporteActividadDiaPDF } from "../lib/exportarReporte";
-import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion, generarHistorialActividadExcel } from "../lib/exportarExcel";
+import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion } from "../lib/exportarExcel";
 import { LOGO_PUNO_BASE64 } from "../lib/logoPuno";
 import {
   getAuth,
@@ -139,7 +139,6 @@ export default function Page() {
   const [exportandoExcelArea, setExportandoExcelArea] = useState(null);
   const [exportandoMaterial, setExportandoMaterial] = useState(null);
   const [menuMaterialAbierto, setMenuMaterialAbierto] = useState(false);
-  const [exportandoHistorial, setExportandoHistorial] = useState(false);
   const [menuSeparadoresAbierto, setMenuSeparadoresAbierto] = useState(false);
   const [exportandoSeparadores, setExportandoSeparadores] = useState(null);
   const [menuListaGeneralAbierto, setMenuListaGeneralAbierto] = useState(false);
@@ -282,37 +281,6 @@ export default function Page() {
       alert(`No se pudo generar la lista general: ${err.message}`);
     } finally {
       setExportandoListaGeneral(null);
-    }
-  }
-
-  // Historial de actividad: baja TODOS los eventos de Firestore (no solo los 50
-  // que se ven en pantalla) y los exporta a Excel, del más reciente al más antiguo.
-  async function handleExportarHistorial() {
-    setExportandoHistorial(true);
-    try {
-      const snap = await getDocs(query(collection(db, "eventos"), orderBy("timestamp", "desc")));
-      const lista = snap.docs.map((d) => {
-        const e = d.data();
-        return {
-          tipo: e.tipo,
-          item: e.item,
-          ruta: e.ruta,
-          usuario: e.usuario,
-          fecha: e.timestamp?.toDate ? e.timestamp.toDate() : null,
-        };
-      });
-      if (lista.length === 0) {
-        alert("Todavía no hay actividad registrada para exportar.");
-        return;
-      }
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Tiempo de espera agotado al generar el Excel")), 45000)
-      );
-      await Promise.race([generarHistorialActividadExcel(lista), timeoutPromise]);
-    } catch (err) {
-      alert(`No se pudo exportar el historial: ${err.message}`);
-    } finally {
-      setExportandoHistorial(false);
     }
   }
 
@@ -1064,32 +1032,6 @@ export default function Page() {
                 </div>
               )}
             </div>
-
-            {/* Historial completo de actividad */}
-            <button
-              onClick={handleExportarHistorial}
-              disabled={exportandoHistorial}
-              style={{
-                fontSize: 13,
-                fontWeight: 800,
-                padding: "14px 18px",
-                borderRadius: 14,
-                border: "2px solid #8FD3F4",
-                background: "linear-gradient(135deg,#0F3558,#0C2B4A)",
-                color: "#CFEFFF",
-                cursor: exportandoHistorial ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                whiteSpace: "nowrap",
-                boxShadow: "0 0 16px rgba(143,211,244,.3)",
-                letterSpacing: 0.2,
-              }}
-              title="Exporta a Excel TODO el historial de actividad (subidas, reemplazos, borrados, carpetas)"
-            >
-              <span style={{ fontSize: 16 }}>🕘</span>
-              {exportandoHistorial ? "GENERANDO HISTORIAL..." : "EXPORTAR HISTORIAL"}
-            </button>
 
             <button
               onClick={() => {
