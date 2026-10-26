@@ -27,19 +27,19 @@ const auth = getAuth(db.app);
 const COLLAPSE_STORAGE_KEY = "uros_grupos_colapsados";
 
 const ESTADO_COLOR = {
-  completa: "#1FA8A0",
+  completa: "#2E9FD8",
   incompleta: "#e67e22",
   vacia: "#c0392b",
 };
 
 const AREA_COLORS = [
-  "#1FA8A0",
+  "#2E9FD8",
   "#e67e22",
   "#c0392b",
-  "#8DB255",
-  "#8DB255",
-  "#8DB255",
-  "#1FA8A0",
+  "#E2B659",
+  "#E2B659",
+  "#E2B659",
+  "#2E9FD8",
 ];
 
 function colorForArea(area) {
@@ -49,11 +49,11 @@ function colorForArea(area) {
 }
 
 const ESTADO_OPTIONS = [
-  { value: "pendientes", label: "Pendientes", color: "#1FA8A0" },
+  { value: "pendientes", label: "Pendientes", color: "#2E9FD8" },
   { value: "incompleta", label: "Incompletas", color: "#e67e22" },
   { value: "vacia", label: "Vacías", color: "#c0392b" },
-  { value: "completa", label: "Completas", color: "#8DB255" },
-  { value: "todas", label: "Todas", color: "#8DB255" },
+  { value: "completa", label: "Completas", color: "#E2B659" },
+  { value: "todas", label: "Todas", color: "#E2B659" },
 ];
 
 const EVENTO_LABEL = {
@@ -69,15 +69,15 @@ const EVENTO_LABEL = {
 };
 
 const EVENTO_COLOR = {
-  archivo_subido: "#1FA8A0",
+  archivo_subido: "#2E9FD8",
   archivo_reemplazado: "#e67e22",
   archivo_borrado: "#c0392b",
-  carpeta_creada: "#8DB255",
+  carpeta_creada: "#E2B659",
   carpeta_borrada: "#c0392b",
   carpeta_movida: "#e67e22",
-  carpeta_marcada_completa: "#1FA8A0",
+  carpeta_marcada_completa: "#2E9FD8",
   carpeta_marcada_incompleta: "#e67e22",
-  carpeta_desmarcada: "#8DB255",
+  carpeta_desmarcada: "#E2B659",
 };
 
 const EVENTO_ICONO = {
@@ -541,21 +541,21 @@ export default function Page() {
   return (
     <div className="uros-fondo-animado" style={{ minHeight: "100vh", width: "100%", paddingBottom: 60 }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Nunito:wght@400;600;700;800&display=swap');
 
         .uros-fondo-animado, .uros-fondo-animado * {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          font-family: 'Nunito', 'Segoe UI', sans-serif;
         }
         .uros-fondo-animado {
           background: linear-gradient(
             -45deg,
-            #08171F,
-            #0F2A36,
-            #1B4456,
-            #25596E,
-            #1B4456,
-            #0F2A36,
-            #08171F
+            #06182B,
+            #0C2B4A,
+            #144068,
+            #1D5A8C,
+            #144068,
+            #0C2B4A,
+            #06182B
           );
           background-size: 500% 500%;
           animation: urosGradiente 5s ease infinite;
@@ -568,13 +568,17 @@ export default function Page() {
         @media (prefers-reduced-motion: reduce) {
           .uros-fondo-animado { animation: none; }
         }
+        .uros-fondo-animado h1, .uros-fondo-animado h2 { font-family: 'Fraunces', Georgia, serif !important; }
+        @keyframes urosOla { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .uros-olas { position: absolute; left: 0; bottom: -1px; width: 100%; height: 14px; overflow: hidden; pointer-events: none; }
+        .uros-olas svg { width: 200%; height: 14px; display: block; animation: urosOla 9s linear infinite; }
         .uros-header-sticky {
           position: sticky;
           top: 0;
           z-index: 40;
           backdrop-filter: blur(12px);
           background: rgba(12,16,21,.96);
-          border-bottom: 3.5px solid #1FA8A0;
+          border-bottom: 3.5px solid #2E9FD8;
           box-shadow: 0 6px 25px rgba(0,0,0,.7);
         }
         .uros-fade-in {
@@ -604,7 +608,7 @@ export default function Page() {
         .uros-fondo-animado button:not(:disabled):hover {
           transform: translateY(-2px) scale(1.02);
           filter: brightness(1.18);
-          box-shadow: 0 6px 20px rgba(31,168,160,.3);
+          box-shadow: 0 6px 20px rgba(46,159,216,.3);
         }
         .uros-fondo-animado button:not(:disabled):active {
           transform: translateY(0) scale(0.97);
@@ -616,8 +620,8 @@ export default function Page() {
         }
         .uros-tarjeta-viva:hover {
           transform: translateY(-3px);
-          border-color: #1FA8A0 !important;
-          box-shadow: 0 8px 25px rgba(31,168,160,.25) !important;
+          border-color: #2E9FD8 !important;
+          box-shadow: 0 8px 25px rgba(46,159,216,.25) !important;
         }
         @keyframes urosTarjetaEntrada {
           from { opacity: 0; transform: translateY(10px) scale(.96); }
@@ -633,7 +637,7 @@ export default function Page() {
         .uros-celda-heatmap:hover {
           transform: scale(1.35);
           transition: transform .12s ease;
-          box-shadow: 0 0 12px rgba(31,168,160,1);
+          box-shadow: 0 0 12px rgba(46,159,216,1);
           z-index: 70;
         }
         .uros-celda-hoy {
@@ -644,7 +648,7 @@ export default function Page() {
           position: absolute;
           inset: 0;
           border-radius: inherit;
-          border: 2px solid #1FA8A0;
+          border: 2px solid #2E9FD8;
           animation: urosHoyPulso 1.4s ease-out infinite;
           pointer-events: none;
         }
@@ -670,15 +674,15 @@ export default function Page() {
           animation: urosHeroPulso 2.6s ease-in-out infinite;
         }
         @keyframes urosHeroPulso {
-          0%, 100% { text-shadow: 0 0 40px rgba(31,168,160,.65); }
-          50%      { text-shadow: 0 0 70px rgba(31,168,160,1), 0 0 110px rgba(31,168,160,.5); }
+          0%, 100% { text-shadow: 0 0 40px rgba(46,159,216,.65); }
+          50%      { text-shadow: 0 0 70px rgba(46,159,216,1), 0 0 110px rgba(46,159,216,.5); }
         }
         .uros-anillo-hero {
           position: absolute;
           inset: 0;
           margin: auto;
           border-radius: 50%;
-          border: 1.5px solid #1FA8A055;
+          border: 1.5px solid #2E9FD855;
           animation: urosAnilloExpande 3.2s ease-out infinite;
           pointer-events: none;
         }
@@ -709,8 +713,8 @@ export default function Page() {
           animation: urosTarjetaEntrada .5s cubic-bezier(.25,.9,.35,1.25) both, urosRespira 3.4s ease-in-out infinite .5s;
         }
         @keyframes urosRespira {
-          0%, 100% { box-shadow: 0 0 22px var(--glow, rgba(31,168,160,.3)); }
-          50%      { box-shadow: 0 0 40px var(--glow, rgba(31,168,160,.55)); }
+          0%, 100% { box-shadow: 0 0 22px var(--glow, rgba(46,159,216,.3)); }
+          50%      { box-shadow: 0 0 40px var(--glow, rgba(46,159,216,.55)); }
         }
         .uros-punto-pulso {
           animation: urosPuntoPulso 2s ease-out infinite 1.4s;
@@ -723,6 +727,7 @@ export default function Page() {
       `}</style>
 
       <div className="uros-header-sticky">
+        <div className="uros-olas"><svg viewBox="0 0 1200 14" preserveAspectRatio="none"><path d="M0 7 Q50 0 100 7 T200 7 T300 7 T400 7 T500 7 T600 7 T700 7 T800 7 T900 7 T1000 7 T1100 7 T1200 7 V14 H0 Z" fill="#E2B659" fill-opacity=".55"/></svg></div>
         <div
           style={{
             maxWidth: modoPresentacion ? "100%" : 1500,
@@ -733,7 +738,7 @@ export default function Page() {
             alignItems: "flex-start",
             flexWrap: "wrap",
             gap: 12,
-            color: "#EAF6F7",
+            color: "#F4F8FC",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -743,19 +748,19 @@ export default function Page() {
               style={{ width: modoPresentacion ? 104 : 80, height: modoPresentacion ? 116 : 90, flexShrink: 0 }}
             />
             <div>
-              <h1 style={{ fontSize: modoPresentacion ? 36 : 24, marginBottom: 4, fontWeight: 800, letterSpacing: -0.3, color: "#EAF6F7", textShadow: "0 2px 6px rgba(0,0,0,.6)" }}>
+              <h1 style={{ fontSize: modoPresentacion ? 36 : 24, marginBottom: 4, fontWeight: 800, letterSpacing: -0.3, color: "#F4F8FC", textShadow: "0 2px 6px rgba(0,0,0,.6)" }}>
                 Proyecto Educativo en los Uros — Puno
               </h1>
-              <p style={{ color: "#B8D4D8", marginTop: 0, marginBottom: 4, fontSize: modoPresentacion ? 16 : 14 }}>
+              <p style={{ color: "#AFCBE3", marginTop: 0, marginBottom: 4, fontSize: modoPresentacion ? 16 : 14 }}>
                 Estado en tiempo real de la carga de documentación
               </p>
-              <p style={{ color: "#B8D4D8", marginTop: 0, marginBottom: 4, fontSize: modoPresentacion ? 12.5 : 10.5, maxWidth: 720, lineHeight: 1.35 }}>
+              <p style={{ color: "#AFCBE3", marginTop: 0, marginBottom: 4, fontSize: modoPresentacion ? 12.5 : 10.5, maxWidth: 720, lineHeight: 1.35 }}>
                 "PROYECTO EDUCATIVO EN LOS UROS - PUNO"
               </p>
               {resumen?.ultimaSync?.toDate && (
-                <p style={{ color: "#1FA8A0", fontSize: 11, marginTop: 0, fontWeight: 700 }}>
+                <p style={{ color: "#2E9FD8", fontSize: 11, marginTop: 0, fontWeight: 700 }}>
                   Última sincronización: {tiempoRelativo(resumen.ultimaSync.toDate())}
-                  {usuarioGoogle && <span style={{ marginLeft: 8, color: "#8DB255" }}>· {usuarioGoogle.email}</span>}
+                  {usuarioGoogle && <span style={{ marginLeft: 8, color: "#E2B659" }}>· {usuarioGoogle.email}</span>}
                 </p>
               )}
             </div>
@@ -769,9 +774,9 @@ export default function Page() {
                   fontWeight: 700,
                   padding: "14px 18px",
                   borderRadius: 14,
-                  border: "2px solid #1FA8A0",
-                  background: "#0F2A36",
-                  color: "#1FA8A0",
+                  border: "2px solid #2E9FD8",
+                  background: "#0C2B4A",
+                  color: "#2E9FD8",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -792,9 +797,9 @@ export default function Page() {
                 fontWeight: 700,
                 padding: "14px 18px",
                 borderRadius: 14,
-                border: "2px solid #1FA8A0",
-                background: "#0F2A36",
-                color: exportandoGlobal ? "#B8D4D8" : "#1FA8A0",
+                border: "2px solid #2E9FD8",
+                background: "#0C2B4A",
+                color: exportandoGlobal ? "#AFCBE3" : "#2E9FD8",
                 cursor: exportandoGlobal || carpetas.length === 0 ? "not-allowed" : "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -816,9 +821,9 @@ export default function Page() {
                   fontWeight: 800,
                   padding: "14px 18px",
                   borderRadius: 14,
-                  border: "2px solid #D4A017",
-                  background: "linear-gradient(135deg,#3A2E08,#0F2A36)",
-                  color: "#F2D98A",
+                  border: "2px solid #7FB069",
+                  background: "linear-gradient(135deg,#16300F,#0C2B4A)",
+                  color: "#D5EBC8",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -841,15 +846,15 @@ export default function Page() {
                     top: "calc(100% + 6px)",
                     left: 0,
                     zIndex: 50,
-                    background: "#1A1506",
-                    border: "2px solid #D4A017",
+                    background: "#0E1F0B",
+                    border: "2px solid #7FB069",
                     borderRadius: 12,
                     minWidth: 260,
                     boxShadow: "0 8px 24px rgba(0,0,0,.5)",
                     overflow: "hidden",
                   }}
                 >
-                  <div style={{ padding: "9px 14px", fontSize: 11, fontWeight: 700, color: "#F2D98A", borderBottom: "1px solid #D4A01755", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <div style={{ padding: "9px 14px", fontSize: 11, fontWeight: 700, color: "#D5EBC8", borderBottom: "1px solid #7FB06955", textTransform: "uppercase", letterSpacing: 0.5 }}>
                     Elige la carpeta madre
                   </div>
                   {areas.map((a) => (
@@ -866,11 +871,11 @@ export default function Page() {
                         fontWeight: 600,
                         background: "transparent",
                         border: "none",
-                        borderBottom: "1px solid #D4A01722",
-                        color: exportandoSeparadores === a ? "#8A7327" : "#F2D98A",
+                        borderBottom: "1px solid #7FB06922",
+                        color: exportandoSeparadores === a ? "#5C8A4A" : "#D5EBC8",
                         cursor: exportandoSeparadores === a ? "not-allowed" : "pointer",
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = "#D4A01722")}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#7FB06922")}
                       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                     >
                       📊 {exportandoSeparadores === a ? `Generando ${a}...` : a}
@@ -889,9 +894,9 @@ export default function Page() {
                   fontWeight: 800,
                   padding: "14px 18px",
                   borderRadius: 14,
-                  border: "2px solid #3F7FBF",
-                  background: "linear-gradient(135deg,#12263D,#0F2A36)",
-                  color: "#BFDBFE",
+                  border: "2px solid #C4456E",
+                  background: "linear-gradient(135deg,#3A1424,#0C2B4A)",
+                  color: "#F7C6D6",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
@@ -914,15 +919,15 @@ export default function Page() {
                     top: "calc(100% + 6px)",
                     left: 0,
                     zIndex: 50,
-                    background: "#0E1D2E",
-                    border: "2px solid #3F7FBF",
+                    background: "#2A0E18",
+                    border: "2px solid #C4456E",
                     borderRadius: 12,
                     minWidth: 260,
                     boxShadow: "0 8px 24px rgba(0,0,0,.5)",
                     overflow: "hidden",
                   }}
                 >
-                  <div style={{ padding: "9px 14px", fontSize: 11, fontWeight: 700, color: "#BFDBFE", borderBottom: "1px solid #3F7FBF55", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                  <div style={{ padding: "9px 14px", fontSize: 11, fontWeight: 700, color: "#F7C6D6", borderBottom: "1px solid #C4456E55", textTransform: "uppercase", letterSpacing: 0.5 }}>
                     Elige la carpeta madre
                   </div>
                   {areas.map((a) => (
@@ -939,11 +944,11 @@ export default function Page() {
                         fontWeight: 600,
                         background: "transparent",
                         border: "none",
-                        borderBottom: "1px solid #3F7FBF22",
-                        color: exportandoListaGeneral === a ? "#4A6B8A" : "#BFDBFE",
+                        borderBottom: "1px solid #C4456E22",
+                        color: exportandoListaGeneral === a ? "#8A4A62" : "#F7C6D6",
                         cursor: exportandoListaGeneral === a ? "not-allowed" : "pointer",
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.background = "#3F7FBF22")}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "#C4456E22")}
                       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                     >
                       📊 {exportandoListaGeneral === a ? `Generando ${a}...` : a}
@@ -970,9 +975,9 @@ export default function Page() {
                 fontWeight: 700,
                 padding: "14px 20px",
                 borderRadius: 14,
-                border: modoPresentacion ? "2.5px solid #1FA8A0" : "1.5px solid #8DB255",
-                background: modoPresentacion ? "#1FA8A033" : "#0F2A36",
-                color: modoPresentacion ? "#1FA8A0" : "#EAF6F7",
+                border: modoPresentacion ? "2.5px solid #2E9FD8" : "1.5px solid #E2B659",
+                background: modoPresentacion ? "#2E9FD833" : "#0C2B4A",
+                color: modoPresentacion ? "#2E9FD8" : "#F4F8FC",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -992,11 +997,11 @@ export default function Page() {
                   fontWeight: 800,
                   padding: "22px 42px",
                   borderRadius: 16,
-                  border: "2.5px solid #1FA8A0",
-                  background: sincronizando ? "#0F2A36" : "linear-gradient(90deg,#1FA8A055,#1B445655)",
-                  color: sincronizando ? "#B8D4D8" : "#1FA8A0",
+                  border: "2.5px solid #2E9FD8",
+                  background: sincronizando ? "#0C2B4A" : "linear-gradient(90deg,#2E9FD855,#14406855)",
+                  color: sincronizando ? "#AFCBE3" : "#2E9FD8",
                   cursor: sincronizando ? "not-allowed" : "pointer",
-                  boxShadow: sincronizando ? "none" : "0 0 35px rgba(31,168,160,.6)",
+                  boxShadow: sincronizando ? "none" : "0 0 35px rgba(46,159,216,.6)",
                   letterSpacing: 0.3,
                 }}
               >
@@ -1007,7 +1012,7 @@ export default function Page() {
                   style={{
                     fontSize: 11,
                     marginTop: 6,
-                    color: mensajeSync.tipo === "ok" ? "#1FA8A0" : "#e76f51",
+                    color: mensajeSync.tipo === "ok" ? "#2E9FD8" : "#e76f51",
                   }}
                 >
                   {mensajeSync.texto}
@@ -1023,7 +1028,7 @@ export default function Page() {
           maxWidth: modoPresentacion ? "100%" : 1500,
           margin: "0 auto",
           padding: modoPresentacion ? "6px 48px 20px" : "24px 28px 32px",
-          color: "#EAF6F7",
+          color: "#F4F8FC",
           ...(modoPresentacion
             ? { minHeight: "calc(100vh - 165px)", display: "flex", flexDirection: "column", justifyContent: "center" }
             : {}),
@@ -1040,7 +1045,7 @@ export default function Page() {
               padding: "4px 10px 4px",
             }}
           >
-            <div style={{ fontSize: 17, fontWeight: 700, color: "#B8D4D8", letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>
+            <div style={{ fontSize: 17, fontWeight: 700, color: "#AFCBE3", letterSpacing: 3, textTransform: "uppercase", marginBottom: 6 }}>
               Avance por archivos
             </div>
             <div style={{ position: "relative", display: "inline-block" }}>
@@ -1053,7 +1058,7 @@ export default function Page() {
                   fontSize: "clamp(90px, 15vw, 190px)",
                   fontWeight: 900,
                   lineHeight: 1,
-                  color: "#1FA8A0",
+                  color: "#2E9FD8",
                 }}
               >
                 {pctArchivosAnimado}%
@@ -1075,9 +1080,9 @@ export default function Page() {
                     fontWeight: 700,
                     padding: "10px 20px",
                     borderRadius: 24,
-                    background: deltaPct > 0 ? "#2ECC7125" : deltaPct < 0 ? "#c0392b25" : "#0F2A36",
-                    color: deltaPct > 0 ? "#2ECC71" : deltaPct < 0 ? "#e57373" : "#B8D4D8",
-                    border: `1.5px solid ${deltaPct > 0 ? "#2ECC7166" : deltaPct < 0 ? "#c0392b66" : "#1FA8A066"}`,
+                    background: deltaPct > 0 ? "#2ECC7125" : deltaPct < 0 ? "#c0392b25" : "#0C2B4A",
+                    color: deltaPct > 0 ? "#2ECC71" : deltaPct < 0 ? "#e57373" : "#AFCBE3",
+                    border: `1.5px solid ${deltaPct > 0 ? "#2ECC7166" : deltaPct < 0 ? "#c0392b66" : "#2E9FD866"}`,
                   }}
                 >
                   {deltaPct > 0 ? "↑" : deltaPct < 0 ? "↓" : "→"} {Math.abs(deltaPct)}% desde la última sincronización
@@ -1090,9 +1095,9 @@ export default function Page() {
                     fontWeight: 700,
                     padding: "10px 20px",
                     borderRadius: 24,
-                    background: "#0F2A36",
-                    color: "#EAF6F7",
-                    border: "1.5px solid #8DB25588",
+                    background: "#0C2B4A",
+                    color: "#F4F8FC",
+                    border: "1.5px solid #E2B65988",
                   }}
                 >
                   📅 A este ritmo, termina el{" "}
@@ -1106,8 +1111,8 @@ export default function Page() {
                     fontWeight: 700,
                     padding: "10px 20px",
                     borderRadius: 24,
-                    background: "#0F2A36",
-                    color: "#B8D4D8",
+                    background: "#0C2B4A",
+                    color: "#AFCBE3",
                     border: "1.5px solid #c0392b66",
                   }}
                 >
@@ -1124,29 +1129,29 @@ export default function Page() {
         <div
           style={{
             marginBottom: 20,
-            background: "#0F2A36",
+            background: "#0C2B4A",
             borderRadius: 12,
             padding: "16px 18px",
-            border: "2px solid #1FA8A066",
-            boxShadow: "0 4px 20px rgba(31,168,160,.15)",
+            border: "2px solid #2E9FD866",
+            boxShadow: "0 4px 20px rgba(46,159,216,.15)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-            <span style={{ fontSize: 16, fontWeight: 700, color: "#EAF6F7", letterSpacing: 0.5 }}>
-              <span style={{ color: "#1FA8A0" }}>»» </span>AVANCE POR CARPETAS
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#F4F8FC", letterSpacing: 0.5 }}>
+              <span style={{ color: "#2E9FD8" }}>»» </span>AVANCE POR CARPETAS
             </span>
-            <strong style={{ fontSize: 30, color: "#1FA8A0", textShadow: "0 0 18px rgba(31,168,160,.7)" }}>{pct}%</strong>
+            <strong style={{ fontSize: 30, color: "#2E9FD8", textShadow: "0 0 18px rgba(46,159,216,.7)" }}>{pct}%</strong>
           </div>
-          <div style={{ fontSize: 11, color: "#B8D4D8", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, color: "#AFCBE3", marginBottom: 8 }}>
             {resumen?.completas ?? "–"} de {resumen?.totalFinales ?? "–"} carpetas marcadas como completas
           </div>
           <div
             style={{
               height: 34,
-              background: "#08171F",
+              background: "#06182B",
               borderRadius: 17,
               overflow: "hidden",
-              boxShadow: "inset 0 2px 6px rgba(0,0,0,.6), 0 0 0 1px #1FA8A066",
+              boxShadow: "inset 0 2px 6px rgba(0,0,0,.6), 0 0 0 1px #2E9FD866",
             }}
           >
             <div
@@ -1155,10 +1160,10 @@ export default function Page() {
                 width: `${pct}%`,
                 height: "100%",
                 backgroundImage:
-                  "repeating-linear-gradient(45deg, rgba(255,255,255,.2) 0px, rgba(255,255,255,.2) 9px, transparent 9px, transparent 18px), linear-gradient(90deg,#1FA8A0,#e67e22)",
+                  "repeating-linear-gradient(45deg, rgba(255,255,255,.2) 0px, rgba(255,255,255,.2) 9px, transparent 9px, transparent 18px), linear-gradient(90deg,#2E9FD8,#e67e22)",
                 backgroundSize: "36px 36px, 100% 100%",
                 transition: "width .4s ease",
-                boxShadow: "0 0 25px rgba(31,168,160,.8)",
+                boxShadow: "0 0 25px rgba(46,159,216,.8)",
                 borderRadius: 17,
               }}
             />
@@ -1169,40 +1174,40 @@ export default function Page() {
         <div
           style={{
             marginBottom: 32,
-            background: "#0F2A36",
+            background: "#0C2B4A",
             borderRadius: 12,
             padding: "16px 18px",
-            border: "2px solid #1FA8A066",
-            boxShadow: "0 4px 20px rgba(31,168,160,.15)",
+            border: "2px solid #2E9FD866",
+            boxShadow: "0 4px 20px rgba(46,159,216,.15)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-            <span style={{ fontSize: 16, fontWeight: 700, color: "#EAF6F7", letterSpacing: 0.5 }}>
-              <span style={{ color: "#1FA8A0" }}>»» </span>AVANCE POR ARCHIVOS <span style={{ fontSize: 11, color: "#B8D4D8", fontWeight: 400 }}>(más preciso)</span>
+            <span style={{ fontSize: 16, fontWeight: 700, color: "#F4F8FC", letterSpacing: 0.5 }}>
+              <span style={{ color: "#2E9FD8" }}>»» </span>AVANCE POR ARCHIVOS <span style={{ fontSize: 11, color: "#AFCBE3", fontWeight: 400 }}>(más preciso)</span>
             </span>
-            <strong style={{ fontSize: 30, color: "#1FA8A0", textShadow: "0 0 18px rgba(31,168,160,.7)" }}>
+            <strong style={{ fontSize: 30, color: "#2E9FD8", textShadow: "0 0 18px rgba(46,159,216,.7)" }}>
               {resumen?.pctArchivos ?? "–"}%
             </strong>
           </div>
-          <div style={{ fontSize: 11, color: "#B8D4D8", marginBottom: 8 }}>
+          <div style={{ fontSize: 11, color: "#AFCBE3", marginBottom: 8 }}>
             {resumen?.totalArchivosCompletados ?? "–"} de {resumen?.totalArchivosNecesarios ?? "–"} archivos que hacen falta, ya están subidos
           </div>
           <div
             style={{
               height: 22,
-              background: "#08171F",
+              background: "#06182B",
               borderRadius: 11,
               overflow: "hidden",
-              boxShadow: "inset 0 2px 6px rgba(0,0,0,.6), 0 0 0 1px #1FA8A066",
+              boxShadow: "inset 0 2px 6px rgba(0,0,0,.6), 0 0 0 1px #2E9FD866",
             }}
           >
             <div
               style={{
                 width: `${resumen?.pctArchivos ?? 0}%`,
                 height: "100%",
-                background: "linear-gradient(90deg,#1FA8A0,#e67e22)",
+                background: "linear-gradient(90deg,#2E9FD8,#e67e22)",
                 transition: "width .4s ease",
-                boxShadow: "0 0 18px rgba(31,168,160,.7)",
+                boxShadow: "0 0 18px rgba(46,159,216,.7)",
                 borderRadius: 11,
               }}
             />
@@ -1211,8 +1216,8 @@ export default function Page() {
 
         {/* Contadores con desglose */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 32 }}>
-          <Card label="Carpetas finales" value={resumen?.totalFinales ?? "–"} color="#8DB255" grande={modoPresentacion} />
-          <Card label="Completas" value={resumen?.completas ?? "–"} color="#1FA8A0" grande={modoPresentacion} />
+          <Card label="Carpetas finales" value={resumen?.totalFinales ?? "–"} color="#E2B659" grande={modoPresentacion} />
+          <Card label="Completas" value={resumen?.completas ?? "–"} color="#2E9FD8" grande={modoPresentacion} />
           <Card label="Incompletas" value={resumen?.incompletas ?? "–"} color="#e67e22" grande={modoPresentacion} />
           <Card label="Vacías" value={resumen?.vacias ?? "–"} color="#c0392b" grande={modoPresentacion} />
         </div>
@@ -1224,8 +1229,8 @@ export default function Page() {
             por círculo. */}
         {modoPresentacion && slidePresentacion === 0 && areas.length > 0 && (
           <div className="uros-fade-in" style={{ marginBottom: 32, maxWidth: 1100, marginLeft: "auto", marginRight: "auto", width: "100%" }}>
-            <div style={{ fontSize: 19, fontWeight: 700, color: "#EAF6F7", marginBottom: 22 }}>
-              <span style={{ color: "#1FA8A0" }}>»» </span>RANKING DE AVANCE POR ÁREA
+            <div style={{ fontSize: 19, fontWeight: 700, color: "#F4F8FC", marginBottom: 22 }}>
+              <span style={{ color: "#2E9FD8" }}>»» </span>RANKING DE AVANCE POR ÁREA
             </div>
             {areas
               .map((a) => {
@@ -1243,18 +1248,18 @@ export default function Page() {
                   className="uros-ranking-item"
                   style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 22, animationDelay: `${i * 90}ms` }}
                 >
-                  <div style={{ width: 34, fontSize: 22, fontWeight: 800, color: "#B8D4D8", textAlign: "center", flexShrink: 0 }}>
+                  <div style={{ width: 34, fontSize: 22, fontWeight: 800, color: "#AFCBE3", textAlign: "center", flexShrink: 0 }}>
                     {i + 1}
                   </div>
-                  <div style={{ width: 250, fontSize: 19, fontWeight: 700, color: "#EAF6F7", flexShrink: 0 }}>
+                  <div style={{ width: 250, fontSize: 19, fontWeight: 700, color: "#F4F8FC", flexShrink: 0 }}>
                     {a}
-                    <div style={{ fontSize: 13, color: "#B8D4D8", fontWeight: 400 }}>
+                    <div style={{ fontSize: 13, color: "#AFCBE3", fontWeight: 400 }}>
                       {stats.total} carpetas · {stats.incompletas} inc. · {stats.vacias} vacías
                     </div>
                   </div>
                   <div
                     className="uros-barra-brillo"
-                    style={{ flex: 1, height: 48, background: "#08171F", borderRadius: 24, boxShadow: "inset 0 2px 6px rgba(0,0,0,.6)" }}
+                    style={{ flex: 1, height: 48, background: "#06182B", borderRadius: 24, boxShadow: "inset 0 2px 6px rgba(0,0,0,.6)" }}
                   >
                     <div
                       style={{
@@ -1279,7 +1284,7 @@ export default function Page() {
         <>
         {/* Selector de Rango de Fechas para Actividad/Heatmap */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#EAF6F7" }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: "#F4F8FC" }}>
             Visualización de Actividad e Historial
           </div>
           <div style={{ display: "flex", gap: 6 }}>
@@ -1295,9 +1300,9 @@ export default function Page() {
                   fontSize: 11,
                   padding: "5px 12px",
                   borderRadius: 16,
-                  border: `1px solid ${rangoDiasHeatmap === btn.val ? "#1FA8A0" : "#8DB255"}`,
-                  background: rangoDiasHeatmap === btn.val ? "#1FA8A033" : "#0F2A36",
-                  color: rangoDiasHeatmap === btn.val ? "#1FA8A0" : "#B8D4D8",
+                  border: `1px solid ${rangoDiasHeatmap === btn.val ? "#2E9FD8" : "#E2B659"}`,
+                  background: rangoDiasHeatmap === btn.val ? "#2E9FD833" : "#0C2B4A",
+                  color: rangoDiasHeatmap === btn.val ? "#2E9FD8" : "#AFCBE3",
                   fontWeight: 600,
                   cursor: "pointer",
                 }}
@@ -1318,8 +1323,8 @@ export default function Page() {
 
         {modoPresentacion && slidePresentacion === 1 && areas.length > 0 && (
           <div className="uros-fade-in uros-modo-transicion" style={{ marginTop: 8 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: "#EAF6F7", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ color: "#1FA8A0" }}>»» </span>AVANCE POR ESPECIALIDAD, POR ÁREA
+            <div style={{ fontSize: 16, fontWeight: 700, color: "#F4F8FC", marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: "#2E9FD8" }}>»» </span>AVANCE POR ESPECIALIDAD, POR ÁREA
             </div>
             {areas.map((a) => {
               const especialidadesDelArea = especialidadPorArea[a] || {};
@@ -1333,7 +1338,7 @@ export default function Page() {
                     style={{
                       fontSize: 13,
                       fontWeight: 700,
-                      color: "#EAF6F7",
+                      color: "#F4F8FC",
                       textTransform: "uppercase",
                       letterSpacing: 0.5,
                       marginBottom: 12,
@@ -1341,7 +1346,7 @@ export default function Page() {
                       display: "flex",
                       alignItems: "center",
                       gap: 8,
-                      background: "#0F2A36",
+                      background: "#0C2B4A",
                       borderRadius: 8,
                       borderBottom: `2.5px solid ${colorForArea(a)}`,
                     }}
@@ -1356,7 +1361,7 @@ export default function Page() {
                         boxShadow: `0 0 8px ${colorForArea(a)}`,
                       }}
                     />
-                    {a} <span style={{ color: "#B8D4D8", fontWeight: 400, textTransform: "none" }}>({nombresOrdenados.length} especialidades)</span>
+                    {a} <span style={{ color: "#AFCBE3", fontWeight: 400, textTransform: "none" }}>({nombresOrdenados.length} especialidades)</span>
                   </div>
                   <div
                     style={{
@@ -1410,9 +1415,9 @@ export default function Page() {
                 width: 40,
                 height: 40,
                 borderRadius: "50%",
-                border: "1.5px solid #8DB25588",
-                background: "#0F2A36",
-                color: "#EAF6F7",
+                border: "1.5px solid #E2B65988",
+                background: "#0C2B4A",
+                color: "#F4F8FC",
                 cursor: "pointer",
               }}
               title="Sección anterior"
@@ -1430,7 +1435,7 @@ export default function Page() {
                     height: 12,
                     borderRadius: 6,
                     border: "none",
-                    background: slidePresentacion === i ? "#1FA8A0" : "#B8D4D866",
+                    background: slidePresentacion === i ? "#2E9FD8" : "#AFCBE366",
                     cursor: "pointer",
                     transition: "all .25s ease",
                     padding: 0,
@@ -1445,9 +1450,9 @@ export default function Page() {
                 width: 40,
                 height: 40,
                 borderRadius: "50%",
-                border: "1.5px solid #8DB25588",
-                background: "#0F2A36",
-                color: "#EAF6F7",
+                border: "1.5px solid #E2B65988",
+                background: "#0C2B4A",
+                color: "#F4F8FC",
                 cursor: "pointer",
               }}
               title="Siguiente sección"
@@ -1455,7 +1460,7 @@ export default function Page() {
               ›
             </button>
             {carruselPausado && (
-              <span style={{ fontSize: 11, color: "#B8D4D8", marginLeft: 6 }}>⏸ en pausa</span>
+              <span style={{ fontSize: 11, color: "#AFCBE3", marginLeft: 6 }}>⏸ en pausa</span>
             )}
           </div>
         )}
@@ -1464,7 +1469,7 @@ export default function Page() {
         <div className="uros-modo-transicion" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 24 }}>
           <div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
-              <h2 style={{ fontSize: 16, color: "#EAF6F7", margin: 0 }}>
+              <h2 style={{ fontSize: 16, color: "#F4F8FC", margin: 0 }}>
                 Carpetas — {ESTADO_FILTRO_LABEL[filtroEstado]}{areaLabel}
               </h2>
             </div>
@@ -1477,9 +1482,9 @@ export default function Page() {
               style={{
                 width: "100%",
                 boxSizing: "border-box",
-                background: "#0F2A36",
-                color: "#EAF6F7",
-                border: "1.5px solid #8DB255",
+                background: "#0C2B4A",
+                color: "#F4F8FC",
+                border: "1.5px solid #E2B659",
                 borderRadius: 8,
                 padding: "9px 12px",
                 fontSize: 13,
@@ -1496,21 +1501,21 @@ export default function Page() {
                 marginBottom: 10,
                 flexWrap: "wrap",
                 alignItems: "center",
-                background: "#0F2A36",
-                border: "1.5px solid #1FA8A066",
+                background: "#0C2B4A",
+                border: "1.5px solid #2E9FD866",
                 borderRadius: 10,
                 padding: "10px 14px",
               }}
             >
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#B8D4D8", marginRight: 4 }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#AFCBE3", marginRight: 4 }}>
                 ⚙️ EXPORTAR FILTRO:
               </span>
               {[
-                { id: "todas", label: "📂 Todas", color: "#8DB255" },
+                { id: "todas", label: "📂 Todas", color: "#E2B659" },
                 { id: "completas", label: "✅ Completas", color: "#2a9d8f" },
                 { id: "incompletas", label: "⚠️ Incompletas", color: "#e67e22" },
                 { id: "vacias", label: "❌ Vacías", color: "#c0392b" },
-                { id: "incompletas_vacias", label: "🚨 Inc. + Vacías", color: "#1FA8A0" },
+                { id: "incompletas_vacias", label: "🚨 Inc. + Vacías", color: "#2E9FD8" },
               ].map((f) => (
                 <button
                   key={f.id}
@@ -1532,9 +1537,9 @@ export default function Page() {
                       fontSize: 13,
                       padding: "8px 16px",
                       borderRadius: "20px 0 0 20px",
-                      border: "1.5px solid #8DB255",
-                      background: "#0F2A36",
-                      color: exportandoArea === a ? "#B8D4D8" : "#EAF6F7",
+                      border: "1.5px solid #E2B659",
+                      background: "#0C2B4A",
+                      color: exportandoArea === a ? "#AFCBE3" : "#F4F8FC",
                       fontWeight: 600,
                       cursor: exportandoArea === a ? "not-allowed" : "pointer",
                     }}
@@ -1549,10 +1554,10 @@ export default function Page() {
                       fontSize: 13,
                       padding: "8px 16px",
                       borderRadius: 0,
-                      border: "1.5px solid #8DB255",
+                      border: "1.5px solid #E2B659",
                       borderLeft: "none",
-                      background: "#0F2A36",
-                      color: exportandoExcelArea === a ? "#B8D4D8" : "#1FA8A0",
+                      background: "#0C2B4A",
+                      color: exportandoExcelArea === a ? "#AFCBE3" : "#2E9FD8",
                       fontWeight: 600,
                       cursor: exportandoExcelArea === a ? "not-allowed" : "pointer",
                     }}
@@ -1567,10 +1572,10 @@ export default function Page() {
                       fontSize: 13,
                       padding: "8px 16px",
                       borderRadius: "0 20px 20px 0",
-                      border: "1.5px solid #8DB255",
+                      border: "1.5px solid #E2B659",
                       borderLeft: "none",
-                      background: "#0F2A36",
-                      color: exportandoMaterial === a ? "#B8D4D8" : "#e5b80b",
+                      background: "#0C2B4A",
+                      color: exportandoMaterial === a ? "#AFCBE3" : "#e5b80b",
                       fontWeight: 600,
                       cursor: exportandoMaterial === a ? "not-allowed" : "pointer",
                     }}
@@ -1594,7 +1599,7 @@ export default function Page() {
                 area="Todas"
                 pct={resumen?.pctArchivos ?? 0}
                 total={resumen?.totalFinales ?? 0}
-                color="#1FA8A0"
+                color="#2E9FD8"
                 active={filtroArea === "Todas"}
                 onClick={() => setFiltroArea("Todas")}
               />
@@ -1634,7 +1639,7 @@ export default function Page() {
               ))}
               <button
                 onClick={() => setColapsados((prev) => ({ ...prev, __all: !prev.__all }))}
-                style={{ ...chipStyle(false, "#B8D4D8"), fontWeight: 700 }}
+                style={{ ...chipStyle(false, "#AFCBE3"), fontWeight: 700 }}
               >
                 {colapsados.__all ? "▸ Expandir todo" : "▾ Colapsar todo"}
               </button>
@@ -1644,10 +1649,10 @@ export default function Page() {
               key={`${filtroEstado}-${filtroArea}-${busqueda}`}
               className="uros-fade-in"
               style={{
-                background: "#08171F",
+                background: "#06182B",
                 borderRadius: 12,
                 overflow: "hidden",
-                border: "2px solid #1FA8A066",
+                border: "2px solid #2E9FD866",
                 boxShadow: "0 6px 24px rgba(0,0,0,.6)",
               }}
             >
@@ -1667,7 +1672,7 @@ export default function Page() {
                   <div style={{ fontSize: 34, opacity: 0.7 }}>
                     {carpetas.length === 0 ? "⏳" : "🔍"}
                   </div>
-                  <div style={{ fontSize: 15, fontWeight: 700, color: "#EAF6F7" }}>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: "#F4F8FC" }}>
                     {carpetas.length === 0 ? "Sin datos todavía" : "No hay carpetas que coincidan"}
                   </div>
                 </div>
@@ -1703,10 +1708,10 @@ export default function Page() {
                         onClick={() => toggleGrupo(key)}
                         style={{
                           padding: "12px 16px 12px 14px",
-                          background: "#0F2A36",
-                          borderLeft: `5px solid ${vaciasGrupo > 0 ? "#c0392b" : tienePendientes ? "#e67e22" : "#1FA8A0"}`,
-                          borderTop: "1px solid #1FA8A044",
-                          borderBottom: "1px solid #08171F",
+                          background: "#0C2B4A",
+                          borderLeft: `5px solid ${vaciasGrupo > 0 ? "#c0392b" : tienePendientes ? "#e67e22" : "#2E9FD8"}`,
+                          borderTop: "1px solid #2E9FD844",
+                          borderBottom: "1px solid #06182B",
                           display: "flex",
                           alignItems: "baseline",
                           gap: 8,
@@ -1714,22 +1719,22 @@ export default function Page() {
                           userSelect: "none",
                         }}
                       >
-                        <span style={{ fontSize: 13, color: "#B8D4D8", transform: grupoColapsado ? "rotate(-90deg)" : "none", display: "inline-block", transition: "transform .15s ease" }}>
+                        <span style={{ fontSize: 13, color: "#AFCBE3", transform: grupoColapsado ? "rotate(-90deg)" : "none", display: "inline-block", transition: "transform .15s ease" }}>
                           ▾
                         </span>
-                        <span style={{ fontSize: 11.5, fontWeight: 800, color: "#B8D4D8", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                        <span style={{ fontSize: 11.5, fontWeight: 800, color: "#AFCBE3", textTransform: "uppercase", letterSpacing: 0.5 }}>
                           {g.area}
                         </span>
-                        <span style={{ color: "#1FA8A0", fontSize: 12 }}>›</span>
+                        <span style={{ color: "#2E9FD8", fontSize: 12 }}>›</span>
                         <span
                           style={{
                             fontSize: 15,
                             fontWeight: 800,
-                            color: "#08171F",
-                            background: "#1FA8A0",
+                            color: "#06182B",
+                            background: "#2E9FD8",
                             padding: "3px 10px",
                             borderRadius: "6px",
-                            boxShadow: "0 2px 8px rgba(31,168,160,.4)",
+                            boxShadow: "0 2px 8px rgba(46,159,216,.4)",
                             textShadow: "none",
                           }}
                         >
@@ -1751,7 +1756,7 @@ export default function Page() {
                               {pendientesGrupo} pendiente{pendientesGrupo !== 1 ? "s" : ""}
                             </span>
                           )}
-                          <span style={{ fontSize: 10.5, color: "#B8D4D8", fontWeight: 600 }}>
+                          <span style={{ fontSize: 10.5, color: "#AFCBE3", fontWeight: 600 }}>
                             {g.items.length} carpeta{g.items.length !== 1 ? "s" : ""}
                           </span>
                         </span>
@@ -1766,12 +1771,12 @@ export default function Page() {
                             onClick={() => window.open(driveUrl, "_blank", "noopener,noreferrer")}
                             style={{
                               padding: "12px 16px 12px 24px",
-                              borderBottom: "1px solid #1A3F50",
+                              borderBottom: "1px solid #12385F",
                               cursor: "pointer",
                               animationDelay: `${(grupoIndex * 35) + (itemIndex * 20)}ms`,
                               transition: "background .15s ease",
                             }}
-                            onMouseEnter={(e) => (e.currentTarget.style.background = "#153847")}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = "#0F3558")}
                             onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                           >
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
@@ -1781,8 +1786,8 @@ export default function Page() {
                                   fontSize: 10,
                                   padding: "2px 8px",
                                   borderRadius: 20,
-                                  background: (ESTADO_COLOR[c.estado] || "#1FA8A0") + "33",
-                                  color: ESTADO_COLOR[c.estado] || "#1FA8A0",
+                                  background: (ESTADO_COLOR[c.estado] || "#2E9FD8") + "33",
+                                  color: ESTADO_COLOR[c.estado] || "#2E9FD8",
                                   textTransform: "uppercase",
                                   fontWeight: 700,
                                   whiteSpace: "nowrap",
@@ -1797,18 +1802,18 @@ export default function Page() {
                                 style={{
                                   marginTop: 6,
                                   padding: "6px 10px",
-                                  background: "#1FA8A01c",
-                                  border: "1.5px solid #1FA8A055",
+                                  background: "#2E9FD81c",
+                                  border: "1.5px solid #2E9FD855",
                                   borderRadius: 8,
                                   fontSize: 11,
-                                  color: "#B8D4D8",
+                                  color: "#AFCBE3",
                                 }}
                               >
-                                ✓ Marcada por <strong style={{ color: "#1FA8A0" }}>{c.marcadoPor || "alguien"}</strong>
+                                ✓ Marcada por <strong style={{ color: "#2E9FD8" }}>{c.marcadoPor || "alguien"}</strong>
                               </div>
                             )}
                             <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, marginTop: 6 }}>
-                              <span style={{ fontSize: 11, color: "#B8D4D8" }}>{detalle}</span>
+                              <span style={{ fontSize: 11, color: "#AFCBE3" }}>{detalle}</span>
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -1819,9 +1824,9 @@ export default function Page() {
                                   fontSize: 10,
                                   padding: "3px 9px",
                                   borderRadius: 20,
-                                  border: c.estado === "completa" ? "1.5px solid #e67e22" : "1.5px solid #1FA8A088",
+                                  border: c.estado === "completa" ? "1.5px solid #e67e22" : "1.5px solid #2E9FD888",
                                   background: "transparent",
-                                  color: marcandoId === c.id ? "#8DB255" : c.estado === "completa" ? "#e67e22" : "#EAF6F7",
+                                  color: marcandoId === c.id ? "#E2B659" : c.estado === "completa" ? "#e67e22" : "#F4F8FC",
                                   cursor: marcandoId === c.id ? "not-allowed" : "pointer",
                                   whiteSpace: "nowrap",
                                   flexShrink: 0,
@@ -1841,22 +1846,22 @@ export default function Page() {
           </div>
 
           <div>
-            <h2 style={{ fontSize: 16, color: "#EAF6F7", marginBottom: 8 }}>Actividad reciente</h2>
+            <h2 style={{ fontSize: 16, color: "#F4F8FC", marginBottom: 8 }}>Actividad reciente</h2>
             <div
               style={{
-                background: "#08171F",
+                background: "#06182B",
                 borderRadius: 12,
                 maxHeight: 480,
                 overflowY: "auto",
-                border: "2px solid #1FA8A066",
+                border: "2px solid #2E9FD866",
                 boxShadow: "0 6px 24px rgba(0,0,0,.6)",
               }}
             >
               {eventos.length === 0 && (
-                <p style={{ padding: 16, color: "#B8D4D8" }}>Sin eventos todavía.</p>
+                <p style={{ padding: 16, color: "#AFCBE3" }}>Sin eventos todavía.</p>
               )}
               {eventos.map((e) => {
-                const color = EVENTO_COLOR[e.tipo] || "#1FA8A0";
+                const color = EVENTO_COLOR[e.tipo] || "#2E9FD8";
                 const icono = EVENTO_ICONO[e.tipo] || "•";
                 const fecha = e.timestamp?.toDate ? e.timestamp.toDate() : null;
                 return (
@@ -1866,7 +1871,7 @@ export default function Page() {
                       display: "flex",
                       gap: 10,
                       padding: "10px 14px",
-                      borderBottom: "1px solid #1A3F50",
+                      borderBottom: "1px solid #12385F",
                     }}
                   >
                     <div
@@ -1889,10 +1894,10 @@ export default function Page() {
                       {icono}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, color: "#EAF6F7" }}>
+                      <div style={{ fontSize: 13, color: "#F4F8FC" }}>
                         <strong>{e.usuario}</strong> <span style={{ color }}>{EVENTO_LABEL[e.tipo] || e.tipo}</span> <strong>{e.item}</strong>
                       </div>
-                      <div style={{ fontSize: 10, color: "#B8D4D8", marginTop: 2 }}>
+                      <div style={{ fontSize: 10, color: "#AFCBE3", marginTop: 2 }}>
                         {tiempoRelativo(fecha)}
                       </div>
                     </div>
@@ -1917,27 +1922,27 @@ export default function Page() {
           zIndex: 50,
           background: "rgba(20, 28, 36, 0.92)",
           backdropFilter: "blur(16px)",
-          border: "2px solid #1FA8A0",
+          border: "2px solid #2E9FD8",
           borderRadius: 32,
           padding: "10px 22px",
           display: "flex",
           alignItems: "center",
           gap: 16,
-          boxShadow: "0 10px 35px rgba(0,0,0,0.7), 0 0 20px rgba(31,168,160,0.25)",
+          boxShadow: "0 10px 35px rgba(0,0,0,0.7), 0 0 20px rgba(46,159,216,0.25)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "#EAF6F7" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#1FA8A0", boxShadow: "0 0 8px #1FA8A0" }} />
-          <span>Filtro activo: <strong style={{ color: "#1FA8A0" }}>{ESTADO_FILTRO_LABEL[filtroEstado]}</strong></span>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, color: "#F4F8FC" }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#2E9FD8", boxShadow: "0 0 8px #2E9FD8" }} />
+          <span>Filtro activo: <strong style={{ color: "#2E9FD8" }}>{ESTADO_FILTRO_LABEL[filtroEstado]}</strong></span>
         </div>
-        <div style={{ width: 1, height: 18, background: "#8DB255" }} />
+        <div style={{ width: 1, height: 18, background: "#E2B659" }} />
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             style={{
               background: "transparent",
-              border: "1.5px solid #8DB255",
-              color: "#B8D4D8",
+              border: "1.5px solid #E2B659",
+              color: "#AFCBE3",
               fontSize: 12,
               fontWeight: 600,
               padding: "6px 14px",
@@ -1950,9 +1955,9 @@ export default function Page() {
           <button
             onClick={() => setColapsados((prev) => ({ ...prev, __all: !prev.__all }))}
             style={{
-              background: "#1FA8A0",
+              background: "#2E9FD8",
               border: "none",
-              color: "#08171F",
+              color: "#06182B",
               fontSize: 12,
               fontWeight: 800,
               padding: "6px 14px",
@@ -1984,8 +1989,8 @@ export default function Page() {
             onClick={(e) => e.stopPropagation()}
             className="uros-fade-in"
             style={{
-              background: "#0F2A36",
-              border: "2.5px solid #1FA8A0",
+              background: "#0C2B4A",
+              border: "2.5px solid #2E9FD8",
               borderRadius: 16,
               width: "min(1100px, 100%)",
               maxHeight: "85vh",
@@ -2000,10 +2005,10 @@ export default function Page() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "20px 26px",
-                borderBottom: "1.5px solid #1FA8A066",
+                borderBottom: "1.5px solid #2E9FD866",
               }}
             >
-              <div style={{ fontSize: 19, fontWeight: 700, color: "#EAF6F7" }}>
+              <div style={{ fontSize: 19, fontWeight: 700, color: "#F4F8FC" }}>
                 ✓ Carpetas marcadas manualmente ({carpetasForzadas.length})
               </div>
               <button
@@ -2012,9 +2017,9 @@ export default function Page() {
                   fontSize: 14,
                   padding: "7px 14px",
                   borderRadius: 8,
-                  border: "1.5px solid #8DB255",
+                  border: "1.5px solid #E2B659",
                   background: "transparent",
-                  color: "#B8D4D8",
+                  color: "#AFCBE3",
                   cursor: "pointer",
                 }}
               >
@@ -2031,9 +2036,9 @@ export default function Page() {
                   style={{
                     width: "100%",
                     boxSizing: "border-box",
-                    background: "#08171F",
-                    color: "#EAF6F7",
-                    border: "1.5px solid #8DB255",
+                    background: "#06182B",
+                    color: "#F4F8FC",
+                    border: "1.5px solid #E2B659",
                     borderRadius: 8,
                     padding: "9px 12px",
                     fontSize: 13,
@@ -2043,11 +2048,11 @@ export default function Page() {
                 />
               )}
               {carpetasForzadas.length === 0 ? (
-                <div style={{ color: "#B8D4D8", fontSize: 15, padding: "24px 0" }}>
+                <div style={{ color: "#AFCBE3", fontSize: 15, padding: "24px 0" }}>
                   No hay ninguna carpeta marcada manualmente todavía.
                 </div>
               ) : carpetasForzadasFiltradas.length === 0 ? (
-                <div style={{ color: "#B8D4D8", fontSize: 15, padding: "24px 0" }}>
+                <div style={{ color: "#AFCBE3", fontSize: 15, padding: "24px 0" }}>
                   Ninguna carpeta marcada coincide con "{busquedaMarcadas}".
                 </div>
               ) : (
@@ -2057,16 +2062,16 @@ export default function Page() {
                     style={{
                       padding: "16px 18px",
                       marginBottom: 12,
-                      background: "#08171F",
-                      border: "1.5px solid #1FA8A066",
+                      background: "#06182B",
+                      border: "1.5px solid #2E9FD866",
                       borderRadius: 10,
                     }}
                   >
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontWeight: 700, color: "#EAF6F7", fontSize: 16 }}>{c.nombre}</div>
-                        <div style={{ fontSize: 13.5, color: "#B8D4D8", marginTop: 3 }}>{c.ruta}</div>
-                        <div style={{ fontSize: 11, color: "#1FA8A0", marginTop: 4, fontWeight: 700, textTransform: "uppercase" }}>
+                        <div style={{ fontWeight: 700, color: "#F4F8FC", fontSize: 16 }}>{c.nombre}</div>
+                        <div style={{ fontSize: 13.5, color: "#AFCBE3", marginTop: 3 }}>{c.ruta}</div>
+                        <div style={{ fontSize: 11, color: "#2E9FD8", marginTop: 4, fontWeight: 700, textTransform: "uppercase" }}>
                           Forzada como: {c.estado || "completa"}
                         </div>
                       </div>
@@ -2079,9 +2084,9 @@ export default function Page() {
                           fontSize: 12,
                           padding: "5px 12px",
                           borderRadius: 20,
-                          border: "1.5px solid #8DB255",
+                          border: "1.5px solid #E2B659",
                           background: "transparent",
-                          color: marcandoId === c.id ? "#8DB255" : "#B8D4D8",
+                          color: marcandoId === c.id ? "#E2B659" : "#AFCBE3",
                           cursor: marcandoId === c.id ? "not-allowed" : "pointer",
                         }}
                       >
@@ -2112,12 +2117,12 @@ function RutaJerarquica({ ruta, nombre, skipLevels = 0 }) {
         const esUltimo = i === mostrar.length - 1;
         return (
           <span key={i} style={{ display: "inline-flex", alignItems: "baseline", gap: 4 }}>
-            {i > 0 && <span style={{ color: "#8DB255", fontSize: 12, fontWeight: 700 }}>›</span>}
+            {i > 0 && <span style={{ color: "#E2B659", fontSize: 12, fontWeight: 700 }}>›</span>}
             <span
               style={{
                 fontSize: esUltimo ? 14.5 : 12,
                 fontWeight: esUltimo ? 800 : 600,
-                color: esUltimo ? "#EAF6F7" : "#8DB255",
+                color: esUltimo ? "#F4F8FC" : "#E2B659",
                 background: "transparent",
                 padding: 0,
                 borderRadius: 0,
@@ -2126,7 +2131,7 @@ function RutaJerarquica({ ruta, nombre, skipLevels = 0 }) {
               }}
             >
               {p}
-              {esUltimo && <span style={{ color: "#8DB255", marginLeft: 4 }}>↗</span>}
+              {esUltimo && <span style={{ color: "#E2B659", marginLeft: 4 }}>↗</span>}
             </span>
           </span>
         );
@@ -2140,7 +2145,7 @@ function EspecialidadMiniCard({ nombre, pct, total, incompletas = 0, vacias = 0,
   const stroke = grande ? 11 : 8;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
-  const color = pct >= 100 ? "#1FA8A0" : pct >= 50 ? "#e67e22" : "#c0392b";
+  const color = pct >= 100 ? "#2E9FD8" : pct >= 50 ? "#e67e22" : "#c0392b";
 
   const [avanzado, setAvanzado] = useState(false);
   useEffect(() => {
@@ -2159,14 +2164,14 @@ function EspecialidadMiniCard({ nombre, pct, total, incompletas = 0, vacias = 0,
         gap: grande ? 12 : 8,
         padding: grande ? "26px 18px" : "18px 12px",
         borderRadius: 12,
-        background: "#0F2A36",
-        border: "1.5px solid #1FA8A066",
+        background: "#0C2B4A",
+        border: "1.5px solid #2E9FD866",
         animationDelay: `${delay}ms`,
         boxShadow: "0 4px 16px rgba(0,0,0,.4)",
       }}
     >
       <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#08171F" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#06182B" strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -2180,14 +2185,14 @@ function EspecialidadMiniCard({ nombre, pct, total, incompletas = 0, vacias = 0,
           style={{ transition: "stroke-dashoffset 1.1s cubic-bezier(.16,1,.3,1)", filter: `drop-shadow(0 0 6px ${color}aa)` }}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
-        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fontSize={grande ? 28 : 20} fontWeight="800" fill="#EAF6F7">
+        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fontSize={grande ? 28 : 20} fontWeight="800" fill="#F4F8FC">
           {pct}%
         </text>
       </svg>
-      <div style={{ fontSize: grande ? 16 : 13, fontWeight: 700, color: "#EAF6F7", textAlign: "center", lineHeight: 1.3, maxWidth: grande ? 190 : 150 }}>
+      <div style={{ fontSize: grande ? 16 : 13, fontWeight: 700, color: "#F4F8FC", textAlign: "center", lineHeight: 1.3, maxWidth: grande ? 190 : 150 }}>
         {nombre}
       </div>
-      <div style={{ fontSize: grande ? 14 : 12, color: "#B8D4D8", fontWeight: 700 }}>{total} carpetas</div>
+      <div style={{ fontSize: grande ? 14 : 12, color: "#AFCBE3", fontWeight: 700 }}>{total} carpetas</div>
       <div style={{ fontSize: grande ? 14 : 13, textAlign: "center", display: "flex", gap: 10, marginTop: 4 }}>
         <span style={{ color: "#e67e22", fontWeight: 700 }}>{incompletas} inc.</span>
         <span style={{ color: "#c0392b", fontWeight: 700 }}>{vacias} vacías</span>
@@ -2225,8 +2230,8 @@ function AreaMiniCard({ area, pct, total, incompletas = 0, vacias = 0, color, ac
         gap: Math.round(size * 0.05),
         padding: "18px 14px",
         borderRadius: 14,
-        border: `2.5px solid ${active ? color : "#1FA8A066"}`,
-        background: active ? color + "25" : "#0F2A36",
+        border: `2.5px solid ${active ? color : "#2E9FD866"}`,
+        background: active ? color + "25" : "#0C2B4A",
         cursor: "pointer",
         transition: "all .15s ease",
         width: tamano ? "100%" : "auto",
@@ -2234,7 +2239,7 @@ function AreaMiniCard({ area, pct, total, incompletas = 0, vacias = 0, color, ac
       }}
     >
       <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#08171F" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#06182B" strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -2254,7 +2259,7 @@ function AreaMiniCard({ area, pct, total, incompletas = 0, vacias = 0, color, ac
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#EAF6F7"
+          stroke="#F4F8FC"
           strokeWidth={Math.max(2, stroke * 0.28)}
           strokeLinecap="round"
           strokeDasharray={`${circumference * 0.09} ${circumference * 0.91}`}
@@ -2269,14 +2274,14 @@ function AreaMiniCard({ area, pct, total, incompletas = 0, vacias = 0, color, ac
             repeatCount="indefinite"
           />
         </circle>
-        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fontSize={fontPct} fontWeight="700" fill="#EAF6F7">
+        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="central" fontSize={fontPct} fontWeight="700" fill="#F4F8FC">
           <AnimatedPercent value={pct} />
         </text>
       </svg>
-      <div style={{ fontSize: fontLabel, fontWeight: 700, color: active ? color : "#EAF6F7", textAlign: "center", marginTop: 4 }}>
+      <div style={{ fontSize: fontLabel, fontWeight: 700, color: active ? color : "#F4F8FC", textAlign: "center", marginTop: 4 }}>
         {area}
       </div>
-      <div style={{ fontSize: fontCount, color: "#B8D4D8", fontWeight: 700 }}>{total} carpetas</div>
+      <div style={{ fontSize: fontCount, color: "#AFCBE3", fontWeight: 700 }}>{total} carpetas</div>
       {tamano && (
         <div style={{ fontSize: 14, textAlign: "center", display: "flex", gap: 12, marginTop: 6 }}>
           <span style={{ color: "#e67e22", fontWeight: 700 }}>{incompletas} inc.</span>
@@ -2289,14 +2294,14 @@ function AreaMiniCard({ area, pct, total, incompletas = 0, vacias = 0, color, ac
 
 function AreaProgressPanel({ area, stats, color }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8, background: "#0F2A36", border: `2.5px solid #1FA8A0`, borderRadius: 12, padding: "18px 22px", marginBottom: 14, boxShadow: `0 4px 20px rgba(31,168,160,.2)` }}>
-      <div style={{ fontSize: 16, fontWeight: 800, color: "#1FA8A0", textTransform: "uppercase", letterSpacing: 0.5 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 8, background: "#0C2B4A", border: `2.5px solid #2E9FD8`, borderRadius: 12, padding: "18px 22px", marginBottom: 14, boxShadow: `0 4px 20px rgba(46,159,216,.2)` }}>
+      <div style={{ fontSize: 16, fontWeight: 800, color: "#2E9FD8", textTransform: "uppercase", letterSpacing: 0.5 }}>
         {area}
       </div>
-      <div style={{ fontSize: 20, fontWeight: 700, color: "#EAF6F7", lineHeight: 1.3 }}>
-        <span style={{ color: "#1FA8A0", fontWeight: 800 }}>{stats.completas}</span> completas de <strong style={{ color: "#EAF6F7" }}>{stats.total}</strong> carpetas
+      <div style={{ fontSize: 20, fontWeight: 700, color: "#F4F8FC", lineHeight: 1.3 }}>
+        <span style={{ color: "#2E9FD8", fontWeight: 800 }}>{stats.completas}</span> completas de <strong style={{ color: "#F4F8FC" }}>{stats.total}</strong> carpetas
       </div>
-      <div style={{ fontSize: 15, fontWeight: 600, color: "#B8D4D8", display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+      <div style={{ fontSize: 15, fontWeight: 600, color: "#AFCBE3", display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
         <span>
           <strong style={{ color: "#e67e22", fontWeight: 700, fontSize: 17 }}>{stats.incompletas}</strong> incompletas
         </span>
@@ -2316,11 +2321,11 @@ function MiniDona({ completas, total }) {
   const circumference = 2 * Math.PI * radius;
   const pct = total > 0 ? completas / total : 0;
   const offset = circumference - pct * circumference;
-  const color = pct >= 1 ? "#1FA8A0" : pct > 0 ? "#e67e22" : "#c0392b";
+  const color = pct >= 1 ? "#2E9FD8" : pct > 0 ? "#e67e22" : "#c0392b";
 
   return (
     <svg width={size} height={size}>
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#08171F" strokeWidth={stroke} />
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#06182B" strokeWidth={stroke} />
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -2342,9 +2347,9 @@ function chipStyle(active, color) {
     fontSize: 13,
     padding: "8px 16px",
     borderRadius: 24,
-    border: `1.5px solid ${active ? color : "#8DB255"}`,
-    background: active ? color + "33" : "#0F2A36",
-    color: active ? color : "#B8D4D8",
+    border: `1.5px solid ${active ? color : "#E2B659"}`,
+    background: active ? color + "33" : "#0C2B4A",
+    color: active ? color : "#AFCBE3",
     fontWeight: 600,
     cursor: "pointer",
     boxShadow: active ? `0 0 12px ${color}66` : "none",
@@ -2401,7 +2406,7 @@ function Card({ label, value, color, grande }) {
     <div
       className={grande ? "uros-tarjeta-viva uros-tarjeta-respira" : "uros-tarjeta-viva"}
       style={{
-        background: "#0F2A36",
+        background: "#0C2B4A",
         borderRadius: 12,
         padding: grande ? "26px" : "18px",
         border: `1.5px solid ${color}55`,
@@ -2410,8 +2415,8 @@ function Card({ label, value, color, grande }) {
         ...(grande ? { "--glow": `${color}55` } : {}),
       }}
     >
-      <div style={{ fontSize: grande ? 52 : 28, fontWeight: 700, color: "#EAF6F7", textShadow: `0 0 14px ${color}66` }}>{valorAnimado}</div>
-      <div style={{ fontSize: grande ? 16 : 12, color: "#B8D4D8", letterSpacing: 0.3 }}>{label}</div>
+      <div style={{ fontSize: grande ? 52 : 28, fontWeight: 700, color: "#F4F8FC", textShadow: `0 0 14px ${color}66` }}>{valorAnimado}</div>
+      <div style={{ fontSize: grande ? 16 : 12, color: "#AFCBE3", letterSpacing: 0.3 }}>{label}</div>
     </div>
   );
 }
@@ -2445,8 +2450,8 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
   return (
     <div
       style={{
-        background: "#0F2A36",
-        border: "2px solid #1FA8A066",
+        background: "#0C2B4A",
+        border: "2px solid #2E9FD866",
         borderRadius: 12,
         padding: grande ? "28px 32px" : "16px 18px",
         boxShadow: "0 4px 20px rgba(0,0,0,.5)",
@@ -2454,13 +2459,13 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
         overflow: "hidden",
       }}
     >
-      <div style={{ fontSize: grande ? 20 : 15, fontWeight: 700, color: "#EAF6F7", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ fontSize: grande ? 20 : 15, fontWeight: 700, color: "#F4F8FC", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span>📈 Tendencia de avance {historial.length > 0 ? `(${historial.length} días)` : ""}</span>
-        <span style={{ fontSize: 11, color: "#B8D4D8", fontWeight: 400 }}>Desliza horizontalmente ↔</span>
+        <span style={{ fontSize: 11, color: "#AFCBE3", fontWeight: 400 }}>Desliza horizontalmente ↔</span>
       </div>
 
       {historial.length < 2 ? (
-        <div style={{ fontSize: 12, color: "#B8D4D8", padding: "20px 0" }}>
+        <div style={{ fontSize: 12, color: "#AFCBE3", padding: "20px 0" }}>
           Todavía no hay suficiente historial.
         </div>
       ) : (
@@ -2483,14 +2488,14 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
           const pasoEtiqueta = 1;
 
           return (
-            <div style={{ overflowX: "auto", overflowY: "hidden", width: "100%", paddingBottom: 8, scrollbarWidth: "thin", scrollbarColor: "#8DB255 #0F2A36" }}>
+            <div style={{ overflowX: "auto", overflowY: "hidden", width: "100%", paddingBottom: 8, scrollbarWidth: "thin", scrollbarColor: "#E2B659 #0C2B4A" }}>
               <svg viewBox={`0 0 ${ancho} ${alto}`} style={{ width: `${ancho}px`, height: `${alto}px`, display: "block" }}>
                 {[0, 25, 50, 75, 100].map((v) => {
                   const y = paddingArriba + altoLinea - paddingArriba - (v / 100) * (altoLinea - paddingArriba * 2);
                   return (
                     <g key={v}>
-                      <line x1={paddingIzq - 10} y1={y} x2={ancho - paddingDer} y2={y} stroke="#1FA8A033" strokeWidth="1" strokeDasharray="3,4" />
-                      <text x={paddingIzq - 16} y={y + 4} textAnchor="end" fontSize={grande ? 14 : 12} fill="#B8D4D8" fontWeight="600">
+                      <line x1={paddingIzq - 10} y1={y} x2={ancho - paddingDer} y2={y} stroke="#2E9FD833" strokeWidth="1" strokeDasharray="3,4" />
+                      <text x={paddingIzq - 16} y={y + 4} textAnchor="end" fontSize={grande ? 14 : 12} fill="#AFCBE3" fontWeight="600">
                         {v}%
                       </text>
                     </g>
@@ -2506,14 +2511,14 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
                 <path
                   d={pathLinea}
                   fill="none"
-                  stroke="#1FA8A0"
+                  stroke="#2E9FD8"
                   strokeWidth={grande ? "4.5" : "3.5"}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   pathLength="1"
                   strokeDasharray="1"
                   strokeDashoffset={avanzado ? 0 : 1}
-                  style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1)", filter: "drop-shadow(0 0 6px rgba(31,168,160,.6))" }}
+                  style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1)", filter: "drop-shadow(0 0 6px rgba(46,159,216,.6))" }}
                 />
                 {puntos.map((p, i) => {
                   const esUltimo = i === puntos.length - 1;
@@ -2523,11 +2528,11 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
                       cx={p.x}
                       cy={p.y}
                       r={esUltimo ? (grande ? 7 : 5.5) : (grande ? 5 : 3.5)}
-                      fill="#1FA8A0"
+                      fill="#2E9FD8"
                       opacity={avanzado ? 1 : 0}
                       style={{
                         transition: `opacity .4s ease ${0.15 + i * 0.03}s, r .4s ease`,
-                        filter: esUltimo ? "drop-shadow(0 0 8px #1FA8A0)" : "none",
+                        filter: esUltimo ? "drop-shadow(0 0 8px #2E9FD8)" : "none",
                       }}
                     />
                   );
@@ -2538,31 +2543,31 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
                     cy={puntos[puntos.length - 1].y}
                     r={grande ? 7 : 5.5}
                     fill="none"
-                    stroke="#1FA8A0"
+                    stroke="#2E9FD8"
                     strokeWidth="2"
                     className="uros-punto-pulso"
                   />
                 )}
                 {/* Punto brillante que recorre toda la línea sin parar */}
                 {fluyendo && (
-                  <circle r={grande ? 5.5 : 4} fill="#EAF6F7" style={{ filter: "drop-shadow(0 0 4px #EAF6F7)" }}>
+                  <circle r={grande ? 5.5 : 4} fill="#F4F8FC" style={{ filter: "drop-shadow(0 0 4px #F4F8FC)" }}>
                     <animateMotion dur="3.4s" repeatCount="indefinite" path={pathLinea} />
                   </circle>
                 )}
 
                 <defs>
                   <linearGradient id="tendenciaGradientGold" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#1FA8A0" />
-                    <stop offset="100%" stopColor="#0F2A36" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#2E9FD8" />
+                    <stop offset="100%" stopColor="#0C2B4A" stopOpacity="0" />
                   </linearGradient>
                 </defs>
 
-                <text x={puntos[puntos.length - 1].x} y={puntos[puntos.length - 1].y - 14} textAnchor="end" fontSize={grande ? 18 : 15} fontWeight="700" fill="#1FA8A0">
+                <text x={puntos[puntos.length - 1].x} y={puntos[puntos.length - 1].y - 14} textAnchor="end" fontSize={grande ? 18 : 15} fontWeight="700" fill="#2E9FD8">
                   {puntos[puntos.length - 1].pct}%
                 </text>
 
-                <line x1={paddingIzq - 10} y1={altoLinea + 8} x2={ancho - paddingDer} y2={altoLinea + 8} stroke="#1FA8A044" strokeWidth="1" />
-                <text x={paddingIzq} y={altoLinea + 18} fontSize={grande ? 12 : 11} fill="#B8D4D8" fontWeight="700">
+                <line x1={paddingIzq - 10} y1={altoLinea + 8} x2={ancho - paddingDer} y2={altoLinea + 8} stroke="#2E9FD844" strokeWidth="1" />
+                <text x={paddingIzq} y={altoLinea + 18} fontSize={grande ? 12 : 11} fill="#AFCBE3" fontWeight="700">
                   INCIDENCIAS DEL DRIVE POR DÍA
                 </text>
                 {puntos.map((p, i) => {
@@ -2576,7 +2581,7 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
                       width="8"
                       height={alturaMostrada}
                       rx="2"
-                      fill={p.incidencias > 0 ? "#1FA8A0" : "#8DB25566"}
+                      fill={p.incidencias > 0 ? "#2E9FD8" : "#E2B65966"}
                       style={{ transition: `height .6s ease ${0.2 + i * 0.02}s, y .6s ease ${0.2 + i * 0.02}s` }}
                     />
                   );
@@ -2588,7 +2593,7 @@ function TendenciaChart({ historial, grande, actividadPorDia }) {
                     ? p.fecha
                     : fechaObj.toLocaleDateString("es-PE", { day: "numeric", month: "short" });
                   return (
-                    <text key={i} x={p.x} y={alto - 2} textAnchor="middle" fontSize={grande ? 13 : 11} fill="#EAF6F7" fontWeight="600">
+                    <text key={i} x={p.x} y={alto - 2} textAnchor="middle" fontSize={grande ? 13 : 11} fill="#F4F8FC" fontWeight="600">
                       {etiqueta}
                     </text>
                   );
@@ -2648,8 +2653,8 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
   }
 
   function intensidad(count) {
-    if (count === 0) return "#08171F";
-    if (count >= 11) return "#1FA8A0";
+    if (count === 0) return "#06182B";
+    if (count >= 11) return "#2E9FD8";
     if (count >= 4) return "#e67e22";
     return "#c0392b";
   }
@@ -2690,15 +2695,15 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
   return (
     <div
       style={{
-        background: "#0F2A36",
-        border: "2px solid #1FA8A066",
+        background: "#0C2B4A",
+        border: "2px solid #2E9FD866",
         borderRadius: 12,
         padding: grande ? "22px 26px" : "16px 18px",
         overflowX: "auto",
         boxShadow: "0 4px 20px rgba(0,0,0,.5)",
       }}
     >
-      <div style={{ fontSize: grande ? 18 : 14, fontWeight: 700, color: "#EAF6F7", marginBottom: grande ? 18 : 10 }}>
+      <div style={{ fontSize: grande ? 18 : 14, fontWeight: 700, color: "#F4F8FC", marginBottom: grande ? 18 : 10 }}>
         🔥 Actividad ({DIAS} días)
       </div>
       <div style={{ display: "flex", gap: grande ? 40 : 20, alignItems: "flex-start", flexWrap: "wrap" }}>
@@ -2733,7 +2738,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 16, minWidth: 240 }}>
           {tiposOrdenados.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#B8D4D8", textTransform: "uppercase", letterSpacing: 0.4 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#AFCBE3", textTransform: "uppercase", letterSpacing: 0.4 }}>
                 Resumen del período
               </div>
               {tiposOrdenados.map((tipo) => (
@@ -2743,9 +2748,9 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                       width: 28,
                       height: 28,
                       borderRadius: "50%",
-                      background: (EVENTO_COLOR[tipo] || "#1FA8A0") + "33",
-                      border: `1.5px solid ${EVENTO_COLOR[tipo] || "#1FA8A0"}`,
-                      color: EVENTO_COLOR[tipo] || "#1FA8A0",
+                      background: (EVENTO_COLOR[tipo] || "#2E9FD8") + "33",
+                      border: `1.5px solid ${EVENTO_COLOR[tipo] || "#2E9FD8"}`,
+                      color: EVENTO_COLOR[tipo] || "#2E9FD8",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -2755,8 +2760,8 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                   >
                     {EVENTO_ICONO[tipo] || "•"}
                   </span>
-                  <strong style={{ color: "#EAF6F7" }}>{conteoPorTipoTotal[tipo]}</strong>
-                  <span style={{ color: "#B8D4D8" }}>{EVENTO_LABEL[tipo] || tipo}</span>
+                  <strong style={{ color: "#F4F8FC" }}>{conteoPorTipoTotal[tipo]}</strong>
+                  <span style={{ color: "#AFCBE3" }}>{EVENTO_LABEL[tipo] || tipo}</span>
                 </div>
               ))}
             </div>
@@ -2772,9 +2777,9 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
             left: tooltipPos ? tooltipPos.left : tooltip.anclaX,
             top: tooltipPos ? tooltipPos.top : tooltip.anclaY,
             visibility: tooltipPos ? "visible" : "hidden",
-            background: "#0F2A36",
-            border: "2px solid #1FA8A0",
-            color: "#EAF6F7",
+            background: "#0C2B4A",
+            border: "2px solid #2E9FD8",
+            color: "#F4F8FC",
             padding: "8px 12px",
             borderRadius: 7,
             fontSize: 11.5,
@@ -2807,8 +2812,8 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
             onClick={(e) => e.stopPropagation()}
             className="uros-fade-in"
             style={{
-              background: "#0F2A36",
-              border: "2.5px solid #1FA8A0",
+              background: "#0C2B4A",
+              border: "2.5px solid #2E9FD8",
               borderRadius: 16,
               width: "min(750px, 100%)",
               maxHeight: "85vh",
@@ -2823,14 +2828,14 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "20px 26px",
-                borderBottom: "1.5px solid #1FA8A066",
+                borderBottom: "1.5px solid #2E9FD866",
               }}
             >
               <div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: "#EAF6F7" }}>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#F4F8FC" }}>
                   Actividad del {formatearFechaLarga(diaSeleccionado.fecha)}
                 </div>
-                <div style={{ fontSize: 12, color: "#B8D4D8", marginTop: 2 }}>
+                <div style={{ fontSize: 12, color: "#AFCBE3", marginTop: 2 }}>
                   {diaSeleccionado.count} evento{diaSeleccionado.count !== 1 ? "s" : ""} registrado{diaSeleccionado.count !== 1 ? "s" : ""}
                 </div>
               </div>
@@ -2840,9 +2845,9 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                   fontSize: 14,
                   padding: "7px 14px",
                   borderRadius: 8,
-                  border: "1.5px solid #8DB255",
+                  border: "1.5px solid #E2B659",
                   background: "transparent",
-                  color: "#B8D4D8",
+                  color: "#AFCBE3",
                   cursor: "pointer",
                 }}
               >
@@ -2851,17 +2856,17 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
             </div>
             <div style={{ overflowY: "auto", padding: "16px 26px 26px", flex: 1 }}>
               {eventosDelDia === null ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "#B8D4D8" }}>
+                <div style={{ textAlign: "center", padding: "40px 0", color: "#AFCBE3" }}>
                   Cargando eventos del día...
                 </div>
               ) : eventosDelDia.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "40px 0", color: "#B8D4D8" }}>
+                <div style={{ textAlign: "center", padding: "40px 0", color: "#AFCBE3" }}>
                   No se encontraron eventos detallados para esta fecha.
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {eventosDelDia.map((ev) => {
-                    const color = EVENTO_COLOR[ev.tipo] || "#1FA8A0";
+                    const color = EVENTO_COLOR[ev.tipo] || "#2E9FD8";
                     const icono = EVENTO_ICONO[ev.tipo] || "•";
                     const fechaEv = ev.timestamp?.toDate ? ev.timestamp.toDate() : null;
                     const horaStr = fechaEv ? fechaEv.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "";
@@ -2869,8 +2874,8 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                       <div
                         key={ev.id}
                         style={{
-                          background: "#08171F",
-                          border: "1.5px solid #1FA8A066",
+                          background: "#06182B",
+                          border: "1.5px solid #2E9FD866",
                           borderRadius: 10,
                           padding: "12px 16px",
                           display: "flex",
@@ -2897,15 +2902,15 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande }) {
                           {icono}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ fontSize: 14, color: "#EAF6F7" }}>
-                            <strong>{ev.usuario || "Usuario"}</strong> <span style={{ color }}>{EVENTO_LABEL[ev.tipo] || ev.tipo}</span> <strong style={{ color: "#1FA8A0" }}>{ev.item}</strong>
+                          <div style={{ fontSize: 14, color: "#F4F8FC" }}>
+                            <strong>{ev.usuario || "Usuario"}</strong> <span style={{ color }}>{EVENTO_LABEL[ev.tipo] || ev.tipo}</span> <strong style={{ color: "#2E9FD8" }}>{ev.item}</strong>
                           </div>
                           {ev.ruta && (
-                            <div style={{ fontSize: 12, color: "#B8D4D8", marginTop: 3, wordBreak: "break-all" }}>
+                            <div style={{ fontSize: 12, color: "#AFCBE3", marginTop: 3, wordBreak: "break-all" }}>
                               📁 {ev.ruta}
                             </div>
                           )}
-                          <div style={{ fontSize: 11, color: "#1FA8A0", marginTop: 6, display: "flex", justifyContent: "space-between" }}>
+                          <div style={{ fontSize: 11, color: "#2E9FD8", marginTop: 6, display: "flex", justifyContent: "space-between" }}>
                             <span>{ev.tipo}</span>
                             <span>{horaStr}</span>
                           </div>
