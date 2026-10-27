@@ -1569,8 +1569,8 @@ export default function Page() {
         )}
 
         {!modoPresentacion && (
-        <div className="uros-modo-transicion" style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 24 }}>
-          <div>
+        <div className="uros-modo-transicion" style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24 }}>
+          <div style={{ order: 2 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, flexWrap: "wrap", gap: 8 }}>
               <h2 style={{ fontSize: 16, color: "#F4F8FC", margin: 0 }}>
                 Carpetas — {ESTADO_FILTRO_LABEL[filtroEstado]}{areaLabel}
@@ -1932,7 +1932,7 @@ export default function Page() {
             </div>
           </div>
 
-          <div>
+          <div style={{ order: 1 }}>
             <h2 style={{ fontSize: 16, color: "#F4F8FC", marginBottom: 8 }}>Actividad reciente</h2>
             <div
               style={{
@@ -1940,7 +1940,7 @@ export default function Page() {
                 backdropFilter: "blur(2px)",
                 WebkitBackdropFilter: "blur(2px)",
                 borderRadius: 12,
-                maxHeight: 480,
+                maxHeight: 300,
                 overflowY: "auto",
                 border: "2px solid #2E9FD866",
                 boxShadow: "0 6px 24px rgba(0,0,0,.6)",
