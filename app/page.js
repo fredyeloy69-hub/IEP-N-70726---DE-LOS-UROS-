@@ -12,6 +12,7 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import { clasificarHojaMm } from "../lib/formatosHoja";
 import { generarReportePorArea, generarReporteConsolidadoGlobal, generarReporteActividadDiaPDF } from "../lib/exportarReporte";
 import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion } from "../lib/exportarExcel";
 import { LOGO_PUNO_BASE64 } from "../lib/logoPuno";
@@ -369,10 +370,17 @@ export default function Page() {
       const pendientes = [];
       for (const c of carpetasDelArea) {
         for (const a of c.archivos || []) {
+          const analizadoConMetodoViejoConRaros =
+            a.tipo === "pdf" &&
+            a.formatos &&
+            a.vFormato !== 3 &&
+            (Array.isArray(a.tamanos)
+              ? a.tamanos.some((t) => !clasificarHojaMm(t.mm[0], t.mm[1]).exacto)
+              : Array.isArray(a.aprox) && a.aprox.length > 0);
           if (
             a.tipo === "pdf" &&
             a.id &&
-            !a.formatos &&
+            (!a.formatos || analizadoConMetodoViejoConRaros) &&
             (a.size == null || a.size <= LIMITE_BYTES) &&
             (!a.errorFormato || /demasiado/.test(a.errorFormato)) // los errores permanentes (dañado, protegido) no se reintentan
           ) {
