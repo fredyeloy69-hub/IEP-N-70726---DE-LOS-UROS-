@@ -1936,11 +1936,11 @@ export default function Page() {
             <h2 style={{ fontSize: 16, color: "#F4F8FC", marginBottom: 8 }}>Actividad reciente</h2>
             <div
               style={{
-                background: "rgba(6,24,43,.55)",
-                backdropFilter: "blur(2px)",
-                WebkitBackdropFilter: "blur(2px)",
+                background: "rgba(6,24,43,.9)",
+                backdropFilter: "blur(3px)",
+                WebkitBackdropFilter: "blur(3px)",
                 borderRadius: 12,
-                maxHeight: 300,
+                maxHeight: 620,
                 overflowY: "auto",
                 border: "2px solid #2E9FD866",
                 boxShadow: "0 6px 24px rgba(0,0,0,.6)",
