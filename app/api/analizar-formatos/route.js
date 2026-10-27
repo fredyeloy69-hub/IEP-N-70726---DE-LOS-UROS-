@@ -64,7 +64,7 @@ export async function POST(request) {
       d.archivos = d.archivos.map((a) => {
         if (a.id !== p.fileId) return a;
         if (r.error) return { ...a, errorFormato: r.error };
-        return { ...a, paginas: r.paginas, formatos: r.formatos, aprox: r.aprox || null, tamanos: r.tamanos || null, errorFormato: null };
+        return { ...a, paginas: r.paginas, formatos: r.formatos, aprox: r.aprox || null, tamanos: r.tamanos || null, vFormato: r.v || 3, errorFormato: null };
       });
       carpetasConCambios.add(p.carpetaId);
     }
