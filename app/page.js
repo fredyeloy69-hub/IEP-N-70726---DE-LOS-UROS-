@@ -754,10 +754,10 @@ export default function Page() {
             position: "relative",
             zIndex: 1,
             display: "flex",
-            justifyContent: "space-between",
+            flexDirection: "column",
             alignItems: "flex-start",
-            flexWrap: "wrap",
-            gap: 12,
+            flexWrap: "nowrap",
+            gap: 16,
             color: "#F4F8FC",
           }}
         >
@@ -785,14 +785,14 @@ export default function Page() {
               )}
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, rowGap: 14, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, rowGap: 14, flexWrap: "wrap", width: "100%" }}>
             {carpetasForzadas.length > 0 && (
               <button
                 onClick={() => setMostrarMarcadas(true)}
                 style={{
                   fontSize: 13,
                   fontWeight: 700,
-                  padding: "14px 18px",
+                  padding: "14px 15px",
                   borderRadius: 14,
                   border: "2px solid #2E9FD8",
                   background: "#0C2B4A",
@@ -815,7 +815,7 @@ export default function Page() {
               style={{
                 fontSize: 13,
                 fontWeight: 700,
-                padding: "14px 18px",
+                padding: "14px 15px",
                 borderRadius: 14,
                 border: "2px solid #2E9FD8",
                 background: "#0C2B4A",
@@ -839,7 +839,7 @@ export default function Page() {
                 style={{
                   fontSize: 13,
                   fontWeight: 800,
-                  padding: "14px 18px",
+                  padding: "14px 15px",
                   borderRadius: 14,
                   border: "2px solid #7FB069",
                   background: "linear-gradient(135deg,#16300F,#0C2B4A)",
@@ -912,7 +912,7 @@ export default function Page() {
                 style={{
                   fontSize: 13,
                   fontWeight: 800,
-                  padding: "14px 18px",
+                  padding: "14px 15px",
                   borderRadius: 14,
                   border: "2px solid #C4456E",
                   background: "linear-gradient(135deg,#3A1424,#0C2B4A)",
@@ -985,7 +985,7 @@ export default function Page() {
                 style={{
                   fontSize: 13,
                   fontWeight: 800,
-                  padding: "14px 18px",
+                  padding: "14px 15px",
                   borderRadius: 14,
                   border: "2px solid #E2B659",
                   background: "linear-gradient(135deg,#2B2008,#0C2B4A)",
@@ -1066,7 +1066,7 @@ export default function Page() {
               style={{
                 fontSize: 14,
                 fontWeight: 700,
-                padding: "14px 20px",
+                padding: "14px 16px",
                 borderRadius: 14,
                 border: modoPresentacion ? "2.5px solid #2E9FD8" : "1.5px solid #E2B659",
                 background: modoPresentacion ? "#2E9FD833" : "#0C2B4A",
@@ -1088,7 +1088,7 @@ export default function Page() {
                 style={{
                   fontSize: 13,
                   fontWeight: 800,
-                  padding: "14px 18px",
+                  padding: "14px 15px",
                   borderRadius: 14,
                   border: "2px solid #2E9FD8",
                   background: sincronizando ? "#0C2B4A" : "linear-gradient(135deg,#1D5A8C,#0F3558)",
