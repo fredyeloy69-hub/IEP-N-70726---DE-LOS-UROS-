@@ -737,25 +737,6 @@ export default function Page() {
           backgroundImage: `linear-gradient(90deg, rgba(3,12,24,.90) 0%, rgba(4,18,34,.72) 45%, rgba(6,30,56,.25) 100%), linear-gradient(180deg, rgba(3,12,24,.35) 0%, rgba(3,12,24,0) 40%, rgba(3,12,24,.30) 100%), url(${FOTO_UROS_BASE64})`,
         }}
       >
-<path d="M10 100 Q170 84 330 100 L322 112 Q170 124 18 112 Z" fill="#A8812F"/>
-<path d="M14 96 Q170 76 326 96 Q170 108 14 96 Z" fill="#E2B659"/>
-<path d="M40 99 L54 94 M78 100 L94 95 M120 100 L136 96 M170 101 L186 96 M214 100 L230 96 M256 99 L272 94 M296 98 L310 94" stroke="#B58A2B" strokeWidth="1.4" fill="none"/>
-<rect x="56" y="64" width="42" height="28" fill="#D9B04E"/><rect x="70" y="74" width="14" height="18" rx="2" fill="#5A3E12"/>
-<path d="M48 66 L77 34 L106 66 Z" fill="#B8862B"/><path d="M77 34 L62 66 M77 34 L77 66 M77 34 L92 66" stroke="#8A6A22" strokeWidth="1.3" fill="none"/>
-<rect x="128" y="56" width="58" height="34" fill="#D9B04E"/><rect x="148" y="68" width="18" height="22" rx="2" fill="#5A3E12"/>
-<path d="M118 58 L157 18 L196 58 Z" fill="#B8862B"/><path d="M157 18 L136 58 M157 18 L146 58 M157 18 L157 58 M157 18 L168 58 M157 18 L178 58" stroke="#8A6A22" strokeWidth="1.3" fill="none"/>
-<path d="M157 18 L157 3" stroke="#5A3E12" strokeWidth="2"/><path d="M157 4 L172 8 L157 12 Z" fill="#E4572E"/>
-<rect x="222" y="66" width="36" height="24" fill="#D9B04E"/><rect x="234" y="76" width="12" height="14" rx="2" fill="#5A3E12"/>
-<path d="M214 68 L240 40 L266 68 Z" fill="#B8862B"/><path d="M240 40 L226 68 M240 40 L240 68 M240 40 L254 68" stroke="#8A6A22" strokeWidth="1.3" fill="none"/>
-<path d="M284 92 L290 54 L296 92 Z" fill="#D9B04E" stroke="#B8862B"/><path d="M298 92 L306 62 L314 92 Z" fill="#D9B04E" stroke="#B8862B"/>
-<path d="M18 104 Q16 86 10 78 M26 106 Q26 88 32 74 M34 106 Q38 92 46 84" stroke="#7FB069" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
-</svg></div><div className="uros-bote"><svg viewBox="0 0 170 90" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 52 Q6 28 22 30 Q18 44 34 54 Q85 70 136 54 Q152 44 148 30 Q164 28 166 52 Q85 84 4 52 Z" fill="#E2B659" stroke="#B8862B" strokeWidth="1.5"/>
-<path d="M30 58 Q85 74 140 58 M20 52 Q85 80 150 52" stroke="#B8862B" strokeWidth="1.3" fill="none"/>
-<rect x="64" y="24" width="42" height="26" fill="#B83A30"/>
-<path d="M72 50 V36 Q77 28 82 36 V50 M88 50 V36 Q93 28 98 36 V50" fill="#F2C14E"/>
-<rect x="60" y="16" width="50" height="9" fill="#F2C14E"/><rect x="60" y="14" width="50" height="3" fill="#B83A30"/>
-</svg></div><div className="uros-olas-capa uros-ola-medio"><svg viewBox="0 0 2880 70" preserveAspectRatio="none"><path d="M0 32 Q120 4 240 32 T480 32 T720 32 T960 32 T1200 32 T1440 32 T1680 32 T1920 32 T2160 32 T2400 32 T2640 32 T2880 32 V70 H0 Z" fill="#2E7DB8" fillOpacity="0.9"/></svg></div><div className="uros-olas-capa uros-ola-frente"><svg viewBox="0 0 2880 52" preserveAspectRatio="none"><path d="M0 24 Q90 2 180 24 T360 24 T540 24 T720 24 T900 24 T1080 24 T1260 24 T1440 24 T1620 24 T1800 24 T1980 24 T2160 24 T2340 24 T2520 24 T2700 24 T2880 24 V52 H0 Z" fill="#3FA9E0" fillOpacity="0.92"/><path d="M0 24 Q90 2 180 24 T360 24 T540 24 T720 24 T900 24 T1080 24 T1260 24 T1440 24 T1620 24 T1800 24 T1980 24 T2160 24 T2340 24 T2520 24 T2700 24 T2880 24" fill="none" stroke="#E8F7FF" strokeOpacity=".85" strokeWidth="3"/></svg></div></div>
         <div
           style={{
             maxWidth: modoPresentacion ? "100%" : 1500,
