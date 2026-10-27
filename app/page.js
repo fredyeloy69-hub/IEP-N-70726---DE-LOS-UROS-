@@ -44,10 +44,25 @@ const AREA_COLORS = [
   "#2E9FD8",
 ];
 
-function colorForArea(area) {
+// Cada carpeta madre (colegio) tiene su propio color:
+//  - Inicial (I.E.I. N.° 1205)  → dorado totora
+//  - Primaria (IEP N° 70726)    → violeta atardecer
+function temaArea(area) {
+  const a = String(area || "");
+  if (/1205|I\.?E\.?I\.?|inicial/i.test(a)) {
+    return { color: "#E2B659", claro: "#F6E1A8", oscuro: "#2B2008", fondo: "rgba(226,182,89,.13)", fondoFuerte: "rgba(226,182,89,.24)" };
+  }
+  if (/70726|IEP|primaria/i.test(a)) {
+    return { color: "#A78BFA", claro: "#DDD0FF", oscuro: "#1E1245", fondo: "rgba(167,139,250,.14)", fondoFuerte: "rgba(167,139,250,.26)" };
+  }
   let hash = 0;
-  for (let i = 0; i < area.length; i++) hash = area.charCodeAt(i) + ((hash << 5) - hash);
-  return AREA_COLORS[Math.abs(hash) % AREA_COLORS.length];
+  for (let i = 0; i < a.length; i++) hash = a.charCodeAt(i) + ((hash << 5) - hash);
+  const c = AREA_COLORS[Math.abs(hash) % AREA_COLORS.length];
+  return { color: c, claro: "#F4F8FC", oscuro: "#06182B", fondo: c + "22", fondoFuerte: c + "3d" };
+}
+
+function colorForArea(area) {
+  return temaArea(area).color;
 }
 
 const ESTADO_OPTIONS = [
@@ -1837,6 +1852,7 @@ export default function Page() {
                   const vaciasGrupo = g.items.filter((c) => c.estado === "vacia").length;
                   const tienePendientes = pendientesGrupo > 0;
                   const grupoColapsado = colapsados.__all ? !colapsados[key] : !!colapsados[key];
+                  const tema = temaArea(g.area);
                   return (
                     <div 
                       key={key} 
@@ -1847,9 +1863,9 @@ export default function Page() {
                         onClick={() => toggleGrupo(key)}
                         style={{
                           padding: "12px 16px 12px 14px",
-                          background: "#0C2B4A",
-                          borderLeft: `5px solid ${vaciasGrupo > 0 ? "#c0392b" : tienePendientes ? "#e67e22" : "#2E9FD8"}`,
-                          borderTop: "1px solid #2E9FD844",
+                          background: `linear-gradient(90deg, ${tema.fondoFuerte}, #0C2B4A 75%)`,
+                          borderLeft: `5px solid ${vaciasGrupo > 0 ? "#c0392b" : tienePendientes ? "#e67e22" : tema.color}`,
+                          borderTop: `1px solid ${tema.color}55`,
                           borderBottom: "1px solid #06182B",
                           display: "flex",
                           alignItems: "baseline",
@@ -1861,19 +1877,19 @@ export default function Page() {
                         <span style={{ fontSize: 13, color: "#AFCBE3", transform: grupoColapsado ? "rotate(-90deg)" : "none", display: "inline-block", transition: "transform .15s ease" }}>
                           ▾
                         </span>
-                        <span style={{ fontSize: 11.5, fontWeight: 800, color: "#AFCBE3", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                        <span style={{ fontSize: 11.5, fontWeight: 800, color: tema.claro, textTransform: "uppercase", letterSpacing: 0.5 }}>
                           {g.area}
                         </span>
-                        <span style={{ color: "#2E9FD8", fontSize: 12 }}>›</span>
+                        <span style={{ color: tema.color, fontSize: 12 }}>›</span>
                         <span
                           style={{
                             fontSize: 15,
                             fontWeight: 800,
-                            color: "#06182B",
-                            background: "#2E9FD8",
+                            color: tema.oscuro,
+                            background: tema.color,
                             padding: "3px 10px",
                             borderRadius: "6px",
-                            boxShadow: "0 2px 8px rgba(46,159,216,.4)",
+                            boxShadow: `0 2px 8px ${tema.color}66`,
                             textShadow: "none",
                           }}
                         >
@@ -1909,17 +1925,19 @@ export default function Page() {
                             className="uros-stagger-item"
                             onClick={() => window.open(driveUrl, "_blank", "noopener,noreferrer")}
                             style={{
-                              padding: "12px 16px 12px 24px",
+                              padding: "12px 16px 12px 20px",
                               borderBottom: "1px solid #12385F",
+                              borderLeft: `5px solid ${tema.color}99`,
+                              background: `linear-gradient(${tema.fondo}, ${tema.fondo}), rgba(6,24,43,.55)`,
                               cursor: "pointer",
                               animationDelay: `${(grupoIndex * 35) + (itemIndex * 20)}ms`,
                               transition: "background .15s ease",
                             }}
-                            onMouseEnter={(e) => (e.currentTarget.style.background = "#0F3558")}
-                            onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                            onMouseEnter={(e) => (e.currentTarget.style.background = `linear-gradient(${tema.fondoFuerte}, ${tema.fondoFuerte}), rgba(6,24,43,.55)`)}
+                            onMouseLeave={(e) => (e.currentTarget.style.background = `linear-gradient(${tema.fondo}, ${tema.fondo}), rgba(6,24,43,.55)`)}
                           >
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                              <RutaJerarquica ruta={c.ruta} nombre={c.nombre} skipLevels={2} />
+                              <RutaJerarquica ruta={c.ruta} nombre={c.nombre} skipLevels={2} color={tema.claro} />
                               <span
                                 style={{
                                   fontSize: 10,
@@ -2257,7 +2275,7 @@ export default function Page() {
   );
 }
 
-function RutaJerarquica({ ruta, nombre, skipLevels = 0 }) {
+function RutaJerarquica({ ruta, nombre, skipLevels = 0, color = "#E2B659" }) {
   let partes = (ruta || nombre || "").split(" / ").filter(Boolean);
   if (skipLevels > 0 && partes.length > skipLevels) {
     partes = partes.slice(skipLevels);
@@ -2270,12 +2288,12 @@ function RutaJerarquica({ ruta, nombre, skipLevels = 0 }) {
         const esUltimo = i === mostrar.length - 1;
         return (
           <span key={i} style={{ display: "inline-flex", alignItems: "baseline", gap: 4 }}>
-            {i > 0 && <span style={{ color: "#E2B659", fontSize: 12, fontWeight: 700 }}>›</span>}
+            {i > 0 && <span style={{ color, fontSize: 12, fontWeight: 700 }}>›</span>}
             <span
               style={{
                 fontSize: esUltimo ? 14.5 : 12,
                 fontWeight: esUltimo ? 800 : 600,
-                color: esUltimo ? "#F4F8FC" : "#E2B659",
+                color: esUltimo ? "#F4F8FC" : color,
                 background: "transparent",
                 padding: 0,
                 borderRadius: 0,
@@ -2284,7 +2302,7 @@ function RutaJerarquica({ ruta, nombre, skipLevels = 0 }) {
               }}
             >
               {p}
-              {esUltimo && <span style={{ color: "#E2B659", marginLeft: 4 }}>↗</span>}
+              {esUltimo && <span style={{ color, marginLeft: 4 }}>↗</span>}
             </span>
           </span>
         );
