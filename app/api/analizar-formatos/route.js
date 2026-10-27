@@ -5,7 +5,8 @@ import { analizarPdf } from "../../../lib/googleDrive";
 export const maxDuration = 60;
 
 const MAX_POR_LLAMADA = 8; // PDFs que se analizan al mismo tiempo en una llamada
-const TIMEOUT_PDF_MS = 40000;
+const TIMEOUT_PDF_MS = 40000; // tiempo máximo por PDF cuando van varios juntos
+const TIMEOUT_PDF_SOLO_MS = 55000; // PDFs grandes (hasta 50 MB) se procesan de a uno y tienen casi todo el minuto
 
 function conTiempoMaximo(promesa, ms) {
   return Promise.race([promesa, new Promise((res) => setTimeout(() => res(null), ms))]);
@@ -19,7 +20,7 @@ function conTiempoMaximo(promesa, ms) {
 // "carpetas") — no se puede pedir analizar un archivo cualquiera de Drive.
 //
 // Body: { items: [{ carpetaId, fileId }, ...] }  (máx. 8 por llamada)
-// Respuesta: { ok, resultados: { [fileId]: { paginas, formatos, aprox } | null } }
+// Respuesta: { ok, resultados: { [fileId]: { paginas, formatos, aprox } | { error } | null } }
 export async function POST(request) {
   try {
     const { items } = await request.json();
@@ -47,9 +48,10 @@ export async function POST(request) {
     });
 
     const resultados = {};
+    const tiempo = validos.length === 1 ? TIMEOUT_PDF_SOLO_MS : TIMEOUT_PDF_MS;
     await Promise.all(
       validos.map(async (p) => {
-        resultados[p.fileId] = await conTiempoMaximo(analizarPdf(p.fileId, TIMEOUT_PDF_MS - 2000), TIMEOUT_PDF_MS);
+        resultados[p.fileId] = await conTiempoMaximo(analizarPdf(p.fileId, tiempo - 2000), tiempo);
       })
     );
 
@@ -57,11 +59,13 @@ export async function POST(request) {
     const carpetasConCambios = new Set();
     for (const p of validos) {
       const r = resultados[p.fileId];
-      if (!r) continue;
+      if (!r) continue; // se pasó del tiempo: se reintenta en la próxima exportación
       const d = docs[p.carpetaId];
-      d.archivos = d.archivos.map((a) =>
-        a.id === p.fileId ? { ...a, paginas: r.paginas, formatos: r.formatos, aprox: r.aprox || null } : a
-      );
+      d.archivos = d.archivos.map((a) => {
+        if (a.id !== p.fileId) return a;
+        if (r.error) return { ...a, errorFormato: r.error };
+        return { ...a, paginas: r.paginas, formatos: r.formatos, aprox: r.aprox || null, tamanos: r.tamanos || null, errorFormato: null };
+      });
       carpetasConCambios.add(p.carpetaId);
     }
     await Promise.all(
