@@ -573,13 +573,15 @@ export default function Page() {
         }
         .uros-fondo-animado h1, .uros-fondo-animado h2 { font-family: 'Fraunces', Georgia, serif !important; }
         @keyframes urosOla { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .uros-olas-contenedor { position: absolute; left: 0; right: 0; bottom: 0; height: 40px; overflow: hidden; pointer-events: none; z-index: 0; }
+        .uros-olas-contenedor { position: absolute; left: 0; right: 0; bottom: 0; height: 150px; overflow: hidden; pointer-events: none; z-index: 0; }
         .uros-olas-sutil { position: absolute; left: 0; bottom: 0; width: 100%; overflow: hidden; }
         .uros-olas-sutil svg { width: 200%; display: block; }
-        .uros-ola-s1 { height: 40px; }
-        .uros-ola-s1 svg { height: 40px; animation: urosOla 16s linear infinite; }
-        .uros-ola-s2 { height: 30px; }
-        .uros-ola-s2 svg { height: 30px; animation: urosOla 10s linear infinite reverse; }
+        .uros-ola-s1 { height: 150px; }
+        .uros-ola-s1 svg { height: 150px; animation: urosOla 7s linear infinite; }
+        .uros-ola-s2 { height: 115px; }
+        .uros-ola-s2 svg { height: 115px; animation: urosOla 4.5s linear infinite reverse; }
+        .uros-ola-s3 { height: 85px; }
+        .uros-ola-s3 svg { height: 85px; animation: urosOla 3s linear infinite; }
         @media (prefers-reduced-motion: reduce) { .uros-olas-contenedor * { animation: none !important; } }
         @keyframes urosPanoramica { 0%,100% { background-position: center 58%; } 50% { background-position: center 84%; } }
         @media (prefers-reduced-motion: reduce) { .uros-header-sticky { animation: none !important; } }
@@ -746,7 +748,7 @@ export default function Page() {
           backgroundImage: `linear-gradient(90deg, rgba(3,12,24,.90) 0%, rgba(4,18,34,.72) 45%, rgba(6,30,56,.25) 100%), linear-gradient(180deg, rgba(3,12,24,.35) 0%, rgba(3,12,24,0) 40%, rgba(3,12,24,.30) 100%), url(${FOTO_UROS_BASE64})`,
         }}
       >
-        <div className="uros-olas-contenedor" aria-hidden="true"><div className="uros-olas-sutil uros-ola-s1"><svg viewBox="0 0 2880 40" preserveAspectRatio="none"><path d="M0 17 Q120 1 240 17 T480 17 T720 17 T960 17 T1200 17 T1440 17 T1680 17 T1920 17 T2160 17 T2400 17 T2640 17 T2880 17 V40 H0 Z" fill="#2E9FD8" fillOpacity="0.3"/><path d="M0 17 Q120 1 240 17 T480 17 T720 17 T960 17 T1200 17 T1440 17 T1680 17 T1920 17 T2160 17 T2400 17 T2640 17 T2880 17" fill="none" stroke="#CFEFFF" strokeOpacity=".45" strokeWidth="3"/></svg></div><div className="uros-olas-sutil uros-ola-s2"><svg viewBox="0 0 2880 30" preserveAspectRatio="none"><path d="M0 13 Q90 1 180 13 T360 13 T540 13 T720 13 T900 13 T1080 13 T1260 13 T1440 13 T1620 13 T1800 13 T1980 13 T2160 13 T2340 13 T2520 13 T2700 13 T2880 13 V30 H0 Z" fill="#8FD3F4" fillOpacity="0.28"/><path d="M0 13 Q90 1 180 13 T360 13 T540 13 T720 13 T900 13 T1080 13 T1260 13 T1440 13 T1620 13 T1800 13 T1980 13 T2160 13 T2340 13 T2520 13 T2700 13 T2880 13" fill="none" stroke="#E8F7FF" strokeOpacity=".65" strokeWidth="3"/></svg></div></div>
+        <div className="uros-olas-contenedor" aria-hidden="true"><div className="uros-olas-sutil uros-ola-s1"><svg viewBox="0 0 2880 150" preserveAspectRatio="none"><path d="M0 72 Q180 20 360 72 T720 72 T1080 72 T1440 72 T1800 72 T2160 72 T2520 72 T2880 72 V150 H0 Z" fill="#2E9FD8" fillOpacity="0.2"/><path d="M0 72 Q180 20 360 72 T720 72 T1080 72 T1440 72 T1800 72 T2160 72 T2520 72 T2880 72" fill="none" stroke="#CFEFFF" strokeOpacity=".40" strokeWidth="3"/></svg></div><div className="uros-olas-sutil uros-ola-s2"><svg viewBox="0 0 2880 115" preserveAspectRatio="none"><path d="M0 56 Q120 16 240 56 T480 56 T720 56 T960 56 T1200 56 T1440 56 T1680 56 T1920 56 T2160 56 T2400 56 T2640 56 T2880 56 V115 H0 Z" fill="#5BB8EA" fillOpacity="0.22"/><path d="M0 56 Q120 16 240 56 T480 56 T720 56 T960 56 T1200 56 T1440 56 T1680 56 T1920 56 T2160 56 T2400 56 T2640 56 T2880 56" fill="none" stroke="#E8F7FF" strokeOpacity=".50" strokeWidth="3"/></svg></div><div className="uros-olas-sutil uros-ola-s3"><svg viewBox="0 0 2880 85" preserveAspectRatio="none"><path d="M0 42 Q90 12 180 42 T360 42 T540 42 T720 42 T900 42 T1080 42 T1260 42 T1440 42 T1620 42 T1800 42 T1980 42 T2160 42 T2340 42 T2520 42 T2700 42 T2880 42 V85 H0 Z" fill="#8FD3F4" fillOpacity="0.24"/><path d="M0 42 Q90 12 180 42 T360 42 T540 42 T720 42 T900 42 T1080 42 T1260 42 T1440 42 T1620 42 T1800 42 T1980 42 T2160 42 T2340 42 T2520 42 T2700 42 T2880 42" fill="none" stroke="#FFFFFF" strokeOpacity=".65" strokeWidth="3"/></svg></div></div>
         <div
           style={{
             maxWidth: modoPresentacion ? "100%" : 1500,
