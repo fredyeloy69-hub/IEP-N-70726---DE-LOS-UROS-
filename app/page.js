@@ -207,6 +207,7 @@ export default function Page() {
   const [exportandoArea, setExportandoArea] = useState(null);
   const [exportandoExcelArea, setExportandoExcelArea] = useState(null);
   const [exportandoMaterial, setExportandoMaterial] = useState(null);
+  const [progresoMaterial, setProgresoMaterial] = useState(null); // { hechos, total } mientras se detectan los formatos
   const [menuMaterialAbierto, setMenuMaterialAbierto] = useState(false);
   const [menuSeparadoresAbierto, setMenuSeparadoresAbierto] = useState(false);
   const [exportandoSeparadores, setExportandoSeparadores] = useState(null);
@@ -358,17 +359,64 @@ export default function Page() {
   async function handleExportarMaterialImpresion(areaNombre, carpetasDelArea) {
     setExportandoMaterial(areaNombre);
     setMenuMaterialAbierto(false);
+    setProgresoMaterial(null);
     try {
+      // 1) Detectar el formato REAL (por tamaño de hoja) de los PDFs que aún no
+      //    fueron analizados. Se hace por tandas; si algo falla, esos PDFs
+      //    quedan con la detección por nombre (como funcionaba antes).
+      const LIMITE_BYTES = 20 * 1024 * 1024;
+      const pendientes = [];
+      for (const c of carpetasDelArea) {
+        for (const a of c.archivos || []) {
+          if (a.tipo === "pdf" && a.id && !a.formatos && (a.size == null || a.size <= LIMITE_BYTES)) {
+            pendientes.push({ carpetaId: c.id, fileId: a.id });
+          }
+        }
+      }
+      const analizados = {};
+      if (pendientes.length > 0) {
+        const TANDA = 8;
+        for (let i = 0; i < pendientes.length; i += TANDA) {
+          setProgresoMaterial({ hechos: i, total: pendientes.length });
+          try {
+            const resp = await fetch("/api/analizar-formatos", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ items: pendientes.slice(i, i + TANDA) }),
+            });
+            const data = await resp.json();
+            if (data && data.ok && data.resultados) {
+              for (const [fileId, r] of Object.entries(data.resultados)) {
+                if (r) analizados[fileId] = r;
+              }
+            }
+          } catch {
+            // se sigue con la siguiente tanda; los que fallen usarán el nombre
+          }
+        }
+      }
+      setProgresoMaterial(null);
+
+      const carpetasListas =
+        Object.keys(analizados).length === 0
+          ? carpetasDelArea
+          : carpetasDelArea.map((c) => ({
+              ...c,
+              archivos: (c.archivos || []).map((a) => (analizados[a.id] ? { ...a, ...analizados[a.id] } : a)),
+            }));
+
+      // 2) Generar el Excel
       const timeoutPromise = new Promise((_, reject) =>
         setTimeout(() => reject(new Error("Tiempo de espera agotado al generar el Excel")), 10000)
       );
       await Promise.race([
-        generarListaMaterialImpresion(areaNombre, carpetasDelArea),
+        generarListaMaterialImpresion(areaNombre, carpetasListas),
         timeoutPromise,
       ]);
     } catch (err) {
       alert(`No se pudo generar el material de impresión: ${err.message}`);
     } finally {
+      setProgresoMaterial(null);
       setExportandoMaterial(null);
     }
   }
@@ -1068,7 +1116,11 @@ export default function Page() {
                 title="Material de impresión (hojas A4/A3/A2/A1/A0) por carpeta madre"
               >
                 <span style={{ fontSize: 16 }}>🖨️</span>
-                MATERIAL DE IMPRESIÓN
+                {exportandoMaterial
+                  ? progresoMaterial
+                    ? `ANALIZANDO FORMATOS ${Math.min(progresoMaterial.hechos + 8, progresoMaterial.total)}/${progresoMaterial.total}...`
+                    : "GENERANDO..."
+                  : "MATERIAL DE IMPRESIÓN"}
                 <span style={{ fontSize: 11, opacity: 0.8 }}>{menuMaterialAbierto ? "▲" : "▼"}</span>
               </button>
 
