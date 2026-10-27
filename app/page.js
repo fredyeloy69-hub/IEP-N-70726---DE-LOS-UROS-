@@ -364,35 +364,52 @@ export default function Page() {
       // 1) Detectar el formato REAL (por tamaño de hoja) de los PDFs que aún no
       //    fueron analizados. Se hace por tandas; si algo falla, esos PDFs
       //    quedan con la detección por nombre (como funcionaba antes).
-      const LIMITE_BYTES = 20 * 1024 * 1024;
+      const LIMITE_BYTES = 50 * 1024 * 1024; // PDFs de hasta 50 MB
+      const UMBRAL_GRANDE = 10 * 1024 * 1024; // los PDFs grandes se analizan de a uno (para no saturar el servidor)
       const pendientes = [];
       for (const c of carpetasDelArea) {
         for (const a of c.archivos || []) {
-          if (a.tipo === "pdf" && a.id && !a.formatos && (a.size == null || a.size <= LIMITE_BYTES)) {
-            pendientes.push({ carpetaId: c.id, fileId: a.id });
+          if (
+            a.tipo === "pdf" &&
+            a.id &&
+            !a.formatos &&
+            (a.size == null || a.size <= LIMITE_BYTES) &&
+            (!a.errorFormato || /demasiado/.test(a.errorFormato)) // los errores permanentes (dañado, protegido) no se reintentan
+          ) {
+            pendientes.push({ carpetaId: c.id, fileId: a.id, grande: !!(a.size && a.size > UMBRAL_GRANDE) });
           }
         }
       }
       const analizados = {};
       if (pendientes.length > 0) {
         const TANDA = 8;
-        for (let i = 0; i < pendientes.length; i += TANDA) {
-          setProgresoMaterial({ hechos: i, total: pendientes.length });
+        // Primero los PDFs normales en tandas de 8; los grandes (>10 MB) uno por uno.
+        const normales = pendientes.filter((p) => !p.grande);
+        const grandes = pendientes.filter((p) => p.grande);
+        const tandas = [];
+        for (let i = 0; i < normales.length; i += TANDA) tandas.push(normales.slice(i, i + TANDA));
+        for (const g of grandes) tandas.push([g]);
+        let hechos = 0;
+        for (const tanda of tandas) {
+          setProgresoMaterial({ hechos, total: pendientes.length, grande: tanda.length === 1 && tanda[0].grande });
           try {
             const resp = await fetch("/api/analizar-formatos", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ items: pendientes.slice(i, i + TANDA) }),
+              body: JSON.stringify({ items: tanda.map(({ carpetaId, fileId }) => ({ carpetaId, fileId })) }),
             });
             const data = await resp.json();
             if (data && data.ok && data.resultados) {
               for (const [fileId, r] of Object.entries(data.resultados)) {
-                if (r) analizados[fileId] = r;
+                if (!r) continue;
+                if (r.error) analizados[fileId] = { errorFormato: r.error };
+                else analizados[fileId] = { ...r, errorFormato: null };
               }
             }
           } catch {
             // se sigue con la siguiente tanda; los que fallen usarán el nombre
           }
+          hechos += tanda.length;
         }
       }
       setProgresoMaterial(null);
@@ -1118,7 +1135,7 @@ export default function Page() {
                 <span style={{ fontSize: 16 }}>🖨️</span>
                 {exportandoMaterial
                   ? progresoMaterial
-                    ? `ANALIZANDO FORMATOS ${Math.min(progresoMaterial.hechos + 8, progresoMaterial.total)}/${progresoMaterial.total}...`
+                    ? `ANALIZANDO FORMATOS ${Math.min(progresoMaterial.hechos + 1, progresoMaterial.total)}/${progresoMaterial.total}${progresoMaterial.grande ? " (PDF grande)" : ""}...`
                     : "GENERANDO..."
                   : "MATERIAL DE IMPRESIÓN"}
                 <span style={{ fontSize: 11, opacity: 0.8 }}>{menuMaterialAbierto ? "▲" : "▼"}</span>
