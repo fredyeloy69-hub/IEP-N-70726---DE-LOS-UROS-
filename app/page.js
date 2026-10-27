@@ -16,6 +16,7 @@ import { generarReportePorArea, generarReporteConsolidadoGlobal, generarReporteA
 import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion } from "../lib/exportarExcel";
 import { LOGO_PUNO_BASE64 } from "../lib/logoPuno";
 import { FOTO_UROS_BASE64 } from "../lib/fotoUros";
+import { FONDO_COLEGIO_BASE64 } from "../lib/fondoColegio";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -542,7 +543,19 @@ export default function Page() {
   const areaLabel = filtroArea !== "Todas" ? ` · ${filtroArea}` : "";
 
   return (
-    <div className="uros-fondo-animado" style={{ minHeight: "100vh", width: "100%", paddingBottom: 60 }}>
+    <div
+      className="uros-fondo-animado"
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        paddingBottom: 60,
+        backgroundImage: `linear-gradient(180deg, rgba(5,20,38,.58) 0%, rgba(5,20,38,.42) 55%, rgba(5,20,38,.55) 100%), url(${FONDO_COLEGIO_BASE64})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center 62%",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Nunito:wght@400;600;700;800&display=swap');
 
@@ -550,23 +563,7 @@ export default function Page() {
           font-family: 'Nunito', 'Segoe UI', sans-serif;
         }
         .uros-fondo-animado {
-          background: linear-gradient(
-            -45deg,
-            #06182B,
-            #0C2B4A,
-            #144068,
-            #1D5A8C,
-            #144068,
-            #0C2B4A,
-            #06182B
-          );
-          background-size: 500% 500%;
-          animation: urosGradiente 5s ease infinite;
-        }
-        @keyframes urosGradiente {
-          0%   { background-position: 0% 50%; }
-          50%  { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          background-color: #06182B;
         }
         @media (prefers-reduced-motion: reduce) {
           .uros-fondo-animado { animation: none; }
@@ -788,7 +785,7 @@ export default function Page() {
               )}
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, rowGap: 14, flexWrap: "wrap" }}>
             {carpetasForzadas.length > 0 && (
               <button
                 onClick={() => setMostrarMarcadas(true)}
@@ -1084,21 +1081,25 @@ export default function Page() {
               <span style={{ fontSize: 18 }}>🖥</span>
               {modoPresentacion ? "Salir de presentación" : "Modo presentación"}
             </button>
-            <div style={{ textAlign: "right" }}>
+            <div style={{ position: "relative" }}>
               <button
                 onClick={handleSync}
                 disabled={sincronizando}
                 style={{
-                  fontSize: 20,
+                  fontSize: 13,
                   fontWeight: 800,
-                  padding: "22px 42px",
-                  borderRadius: 16,
-                  border: "2.5px solid #2E9FD8",
-                  background: sincronizando ? "#0C2B4A" : "linear-gradient(90deg,#2E9FD855,#14406855)",
-                  color: sincronizando ? "#AFCBE3" : "#2E9FD8",
+                  padding: "14px 18px",
+                  borderRadius: 14,
+                  border: "2px solid #2E9FD8",
+                  background: sincronizando ? "#0C2B4A" : "linear-gradient(135deg,#1D5A8C,#0F3558)",
+                  color: sincronizando ? "#AFCBE3" : "#CFEFFF",
                   cursor: sincronizando ? "not-allowed" : "pointer",
-                  boxShadow: sincronizando ? "none" : "0 0 35px rgba(46,159,216,.6)",
-                  letterSpacing: 0.3,
+                  boxShadow: sincronizando ? "none" : "0 0 16px rgba(46,159,216,.55)",
+                  letterSpacing: 0.2,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {sincronizando ? "⟳ Sincronizando..." : "⟳ Sincronizar ahora"}
@@ -1106,9 +1107,15 @@ export default function Page() {
               {mensajeSync && (
                 <p
                   style={{
+                    position: "absolute",
+                    top: "calc(100% + 4px)",
+                    right: 0,
+                    margin: 0,
+                    whiteSpace: "nowrap",
                     fontSize: 11,
-                    marginTop: 6,
-                    color: mensajeSync.tipo === "ok" ? "#2E9FD8" : "#e76f51",
+                    fontWeight: 700,
+                    textShadow: "0 1px 4px rgba(0,0,0,.9)",
+                    color: mensajeSync.tipo === "ok" ? "#8FD3F4" : "#ff8a6b",
                   }}
                 >
                   {mensajeSync.texto}
