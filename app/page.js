@@ -15,6 +15,7 @@ import {
 import { generarReportePorArea, generarReporteConsolidadoGlobal, generarReporteActividadDiaPDF } from "../lib/exportarReporte";
 import { generarReporteExcelPorArea, generarListaSeparadoresExcel, generarListaGeneralExcel, generarListaMaterialImpresion } from "../lib/exportarExcel";
 import { LOGO_PUNO_BASE64 } from "../lib/logoPuno";
+import { FOTO_UROS_BASE64 } from "../lib/fotoUros";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -571,31 +572,19 @@ export default function Page() {
           .uros-fondo-animado { animation: none; }
         }
         .uros-fondo-animado h1, .uros-fondo-animado h2 { font-family: 'Fraunces', Georgia, serif !important; }
-        @keyframes urosOla { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes urosFlota { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        @keyframes urosBalanceo { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-5px) rotate(2deg); } }
-        .uros-escena { position: absolute; left: 0; right: 0; bottom: -1px; height: 150px; overflow: hidden; pointer-events: none; z-index: 0; }
-        .uros-olas-capa { position: absolute; left: 0; bottom: 0; width: 100%; overflow: hidden; }
-        .uros-olas-capa svg { width: 200%; display: block; }
-        .uros-ola-atras { height: 90px; }
-        .uros-ola-atras svg { height: 90px; animation: urosOla 24s linear infinite; }
-        .uros-ola-medio { height: 70px; }
-        .uros-ola-medio svg { height: 70px; animation: urosOla 15s linear infinite reverse; }
-        .uros-ola-frente { height: 52px; }
-        .uros-ola-frente svg { height: 52px; animation: urosOla 9s linear infinite; }
-        .uros-isla { position: absolute; right: 4%; bottom: 22px; width: 340px; animation: urosFlota 6s ease-in-out infinite; }
-        .uros-isla svg, .uros-bote svg { width: 100%; height: auto; display: block; }
-        .uros-bote { position: absolute; right: calc(4% + 370px); bottom: 16px; width: 150px; transform-origin: 50% 85%; animation: urosBalanceo 5s ease-in-out infinite; }
-        @media (max-width: 1300px) { .uros-isla, .uros-bote { display: none; } }
-        @media (prefers-reduced-motion: reduce) { .uros-escena * { animation: none !important; } }
+        @keyframes urosPanoramica { 0%,100% { background-position: center 58%; } 50% { background-position: center 84%; } }
+        @media (prefers-reduced-motion: reduce) { .uros-header-sticky { animation: none !important; } }
         .uros-header-sticky {
           position: sticky;
           top: 0;
           z-index: 40;
           backdrop-filter: blur(12px);
-          background: linear-gradient(180deg, rgba(3,12,24,.97) 0%, rgba(7,34,62,.97) 100%);
-          border-bottom: 0;
+          background: #06182B;
+          background-size: cover;
+          background-repeat: no-repeat;
+          border-bottom: 3px solid #8FD3F4;
           box-shadow: 0 6px 25px rgba(0,0,0,.6);
+          animation: urosPanoramica 50s ease-in-out infinite;
         }
         .uros-fade-in {
           animation: urosFadeIn .32s cubic-bezier(.16,1,.3,1) both;
@@ -742,8 +731,12 @@ export default function Page() {
         }
       `}</style>
 
-      <div className="uros-header-sticky">
-        <div className="uros-escena" aria-hidden="true"><div className="uros-olas-capa uros-ola-atras"><svg viewBox="0 0 2880 90" preserveAspectRatio="none"><path d="M0 40 Q180 4 360 40 T720 40 T1080 40 T1440 40 T1800 40 T2160 40 T2520 40 T2880 40 V90 H0 Z" fill="#1D5A8C" fillOpacity="0.95"/></svg></div><div className="uros-isla"><svg viewBox="0 0 340 125" xmlns="http://www.w3.org/2000/svg">
+      <div
+        className="uros-header-sticky"
+        style={{
+          backgroundImage: `linear-gradient(90deg, rgba(3,12,24,.90) 0%, rgba(4,18,34,.72) 45%, rgba(6,30,56,.25) 100%), linear-gradient(180deg, rgba(3,12,24,.35) 0%, rgba(3,12,24,0) 40%, rgba(3,12,24,.30) 100%), url(${FOTO_UROS_BASE64})`,
+        }}
+      >
 <path d="M10 100 Q170 84 330 100 L322 112 Q170 124 18 112 Z" fill="#A8812F"/>
 <path d="M14 96 Q170 76 326 96 Q170 108 14 96 Z" fill="#E2B659"/>
 <path d="M40 99 L54 94 M78 100 L94 95 M120 100 L136 96 M170 101 L186 96 M214 100 L230 96 M256 99 L272 94 M296 98 L310 94" stroke="#B58A2B" strokeWidth="1.4" fill="none"/>
@@ -767,7 +760,7 @@ export default function Page() {
           style={{
             maxWidth: modoPresentacion ? "100%" : 1500,
             margin: "0 auto",
-            padding: modoPresentacion ? "18px 48px 100px" : "16px 28px 92px",
+            padding: modoPresentacion ? "18px 48px 30px" : "16px 28px 22px",
             position: "relative",
             zIndex: 1,
             display: "flex",
