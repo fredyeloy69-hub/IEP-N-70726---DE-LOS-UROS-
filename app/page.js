@@ -1734,7 +1734,9 @@ export default function Page() {
               key={`${filtroEstado}-${filtroArea}-${busqueda}`}
               className="uros-fade-in"
               style={{
-                background: "#06182B",
+                background: "rgba(6,24,43,.55)",
+                backdropFilter: "blur(2px)",
+                WebkitBackdropFilter: "blur(2px)",
                 borderRadius: 12,
                 overflow: "hidden",
                 border: "2px solid #2E9FD866",
@@ -1934,7 +1936,9 @@ export default function Page() {
             <h2 style={{ fontSize: 16, color: "#F4F8FC", marginBottom: 8 }}>Actividad reciente</h2>
             <div
               style={{
-                background: "#06182B",
+                background: "rgba(6,24,43,.55)",
+                backdropFilter: "blur(2px)",
+                WebkitBackdropFilter: "blur(2px)",
                 borderRadius: 12,
                 maxHeight: 480,
                 overflowY: "auto",
