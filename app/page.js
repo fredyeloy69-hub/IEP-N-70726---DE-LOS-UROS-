@@ -113,6 +113,58 @@ function formatearFechaLarga(fechaEntrada) {
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
+const ACCION_CORTA = {
+  archivo_subido: "Subió",
+  archivo_reemplazado: "Reemplazó",
+  archivo_borrado: "Borró",
+  carpeta_creada: "Creó carpeta",
+  carpeta_borrada: "Borró carpeta",
+  carpeta_movida: "Movió carpeta",
+  carpeta_marcada_completa: "Marcó completa",
+  carpeta_marcada_incompleta: "Marcó incompleta",
+  carpeta_desmarcada: "Revirtió marca",
+};
+
+function proyectoDeRuta(ruta) {
+  return ((ruta || "").split(" / ")[0] || "Sin proyecto").replace(/\.lnk$/i, "").trim();
+}
+
+function carpetaDeRuta(ruta) {
+  const partes = (ruta || "").split(" / ");
+  return partes.slice(1).join(" / ");
+}
+
+function tipoArchivoDeEvento(e) {
+  if (String(e.tipo || "").startsWith("carpeta_")) return "Carpeta";
+  const m = String(e.item || "").match(/\.([A-Za-z0-9]{1,5})$/);
+  if (!m) return "Archivo";
+  const ext = m[1].toUpperCase();
+  const GRUPOS = {
+    Imagen: ["JPG", "JPEG", "PNG", "GIF", "BMP", "TIF", "TIFF", "WEBP", "HEIC"],
+    PDF: ["PDF"],
+    Word: ["DOC", "DOCX"],
+    Excel: ["XLS", "XLSX", "XLSM", "CSV"],
+    Plano: ["DWG", "DXF", "RVT", "IFC"],
+    Video: ["MP4", "MOV", "AVI", "MKV"],
+    Comprimido: ["ZIP", "RAR", "7Z"],
+  };
+  for (const [g, exts] of Object.entries(GRUPOS)) if (exts.includes(ext)) return `${ext} · ${g}`;
+  return ext;
+}
+
+function fechaHoraLima(date) {
+  if (!date) return "—";
+  return new Intl.DateTimeFormat("es-PE", {
+    timeZone: "America/Lima",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(date);
+}
+
 function tiempoRelativo(date) {
   if (!date) return "...";
   const diffMs = Date.now() - date.getTime();
@@ -1983,11 +2035,23 @@ export default function Page() {
                       {icono}
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, color: "#F4F8FC" }}>
-                        <strong>{e.usuario}</strong> <span style={{ color }}>{EVENTO_LABEL[e.tipo] || e.tipo}</span> <strong>{e.item}</strong>
+                      <div style={{ fontSize: 13, color: "#F4F8FC", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+                        <strong>{e.usuario || "Usuario"}</strong>
+                        <span style={{ fontSize: 10.5, fontWeight: 800, padding: "2px 9px", borderRadius: 10, background: color + "33", border: `1px solid ${color}`, color, textTransform: "uppercase", letterSpacing: 0.4 }}>
+                          {ACCION_CORTA[e.tipo] || e.tipo}
+                        </span>
+                        <strong style={{ color: "#2E9FD8", wordBreak: "break-all" }}>{e.item}</strong>
                       </div>
-                      <div style={{ fontSize: 10, color: "#AFCBE3", marginTop: 2 }}>
-                        {tiempoRelativo(fecha)}
+                      {e.ruta && (
+                        <div style={{ fontSize: 11.5, color: "#AFCBE3", marginTop: 5, display: "flex", flexDirection: "column", gap: 2 }}>
+                          <span><span style={{ color: "#E2B659", fontWeight: 700 }}>Proyecto:</span> {proyectoDeRuta(e.ruta)}</span>
+                          <span style={{ wordBreak: "break-word" }}><span style={{ color: "#E2B659", fontWeight: 700 }}>📁 Carpeta:</span> {carpetaDeRuta(e.ruta) || "(raíz)"}</span>
+                        </div>
+                      )}
+                      <div style={{ fontSize: 11, color: "#AFCBE3", marginTop: 6, display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
+                        <span style={{ color: "#8FD3F4", fontWeight: 700 }}>🗂 {tipoArchivoDeEvento(e)}</span>
+                        <span>🕒 {fechaHoraLima(fecha)}</span>
+                        <span style={{ opacity: 0.8 }}>{tiempoRelativo(fecha)}</span>
                       </div>
                     </div>
                   </div>
