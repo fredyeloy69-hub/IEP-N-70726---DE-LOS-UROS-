@@ -78,6 +78,8 @@ const EVENTO_LABEL = {
   archivo_subido: "subió",
   archivo_reemplazado: "reemplazó",
   archivo_borrado: "borró",
+  archivo_movido: "movió",
+  archivo_copiado: "copió",
   carpeta_creada: "creó la carpeta",
   carpeta_borrada: "borró la carpeta",
   carpeta_movida: "movió la carpeta",
@@ -90,6 +92,8 @@ const EVENTO_COLOR = {
   archivo_subido: "#2E9FD8",
   archivo_reemplazado: "#e67e22",
   archivo_borrado: "#c0392b",
+  archivo_movido: "#9B7CF0",
+  archivo_copiado: "#2FB59B",
   carpeta_creada: "#E2B659",
   carpeta_borrada: "#c0392b",
   carpeta_movida: "#e67e22",
@@ -102,6 +106,8 @@ const EVENTO_ICONO = {
   archivo_subido: "↑",
   archivo_reemplazado: "⟲",
   archivo_borrado: "✕",
+  archivo_movido: "⇄",
+  archivo_copiado: "⧉",
   carpeta_creada: "+",
   carpeta_borrada: "✕",
   carpeta_movida: "⇄",
@@ -133,6 +139,8 @@ const ACCION_CORTA = {
   archivo_subido: "Subió",
   archivo_reemplazado: "Reemplazó",
   archivo_borrado: "Borró",
+  archivo_movido: "Movió",
+  archivo_copiado: "Copió",
   carpeta_creada: "Creó carpeta",
   carpeta_borrada: "Borró carpeta",
   carpeta_movida: "Movió carpeta",
@@ -2140,7 +2148,14 @@ export default function Page() {
                       {e.ruta && (
                         <div style={{ fontSize: 11.5, color: "#AFCBE3", marginTop: 5, display: "flex", flexDirection: "column", gap: 2 }}>
                           <span><span style={{ color: "#E2B659", fontWeight: 700 }}>Proyecto:</span> {proyectoDeRuta(e.ruta)}</span>
-                          <span style={{ wordBreak: "break-word" }}><span style={{ color: "#E2B659", fontWeight: 700 }}>📁 Carpeta:</span> {carpetaDeRuta(e.ruta) || "(raíz)"}</span>
+                          {e.desde ? (
+                            <>
+                              <span style={{ wordBreak: "break-word" }}><span style={{ color: "#E2B659", fontWeight: 700 }}>📁 Desde:</span> {carpetaDeRuta(e.desde) || "(raíz)"}</span>
+                              <span style={{ wordBreak: "break-word" }}><span style={{ color: "#9B7CF0", fontWeight: 700 }}>➜ Hacia:</span> {carpetaDeRuta(e.ruta) || "(raíz)"}</span>
+                            </>
+                          ) : (
+                            <span style={{ wordBreak: "break-word" }}><span style={{ color: "#E2B659", fontWeight: 700 }}>📁 Carpeta:</span> {carpetaDeRuta(e.ruta) || "(raíz)"}</span>
+                          )}
                         </div>
                       )}
                       <div style={{ fontSize: 11, color: "#AFCBE3", marginTop: 6, display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
