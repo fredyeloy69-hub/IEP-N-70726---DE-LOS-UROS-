@@ -6,14 +6,9 @@ export const maxDuration = 60;
 
 // Corrige la hora de los eventos YA guardados (los que quedaron con la hora de
 // la sincronización) usando la hora real que guarda Drive en cada archivo.
-// Uso: /api/reparar-horas?secret=TU_CRON_SECRET   (opcional: &n=100 = cuántos eventos revisar)
+// Uso: abrir /api/reparar-horas (sin secret). BORRAR este archivo después de usarlo.   (opcional: &n=100 = cuántos eventos revisar)
 export async function GET(request) {
   const url = new URL(request.url);
-  const autorizado =
-    request.headers.get("authorization") === `Bearer ${process.env.CRON_SECRET}` ||
-    url.searchParams.get("secret") === process.env.CRON_SECRET;
-  if (!autorizado) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-
   const n = Math.min(Number(url.searchParams.get("n")) || 60, 150);
   try {
     const drive = getDriveClient();
