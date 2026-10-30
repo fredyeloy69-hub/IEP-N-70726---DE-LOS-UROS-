@@ -1,56 +1,80 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebaseAdmin";
-import { getDriveClient } from "@/lib/googleDrive";
+import { adminDb } from "../../../lib/firebaseAdmin";
+import { analizarPdf } from "../../../lib/googleDrive";
 
 export const maxDuration = 60;
 
-// Corrige la hora de los eventos YA guardados (los que quedaron con la hora de
-// la sincronización) usando la hora real que guarda Drive en cada archivo.
-// Uso: /api/reparar-horas?secret=TU_CRON_SECRET   (opcional: &n=100 = cuántos eventos revisar)
-export async function GET(request) {
-  const url = new URL(request.url);
-  const autorizado =
-    request.headers.get("authorization") === `Bearer ${process.env.CRON_SECRET}` ||
-    url.searchParams.get("secret") === process.env.CRON_SECRET;
-  if (!autorizado) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+const MAX_POR_LLAMADA = 8; // PDFs que se analizan al mismo tiempo en una llamada
+const TIMEOUT_PDF_MS = 40000; // tiempo máximo por PDF cuando van varios juntos
+const TIMEOUT_PDF_SOLO_MS = 55000; // PDFs grandes (hasta 50 MB) se procesan de a uno y tienen casi todo el minuto
 
-  const n = Math.min(Number(url.searchParams.get("n")) || 60, 150);
+function conTiempoMaximo(promesa, ms) {
+  return Promise.race([promesa, new Promise((res) => setTimeout(() => res(null), ms))]);
+}
+
+// Analiza el formato REAL (A4/A3/A2/A1/A0) de cada hoja de varios PDFs y lo
+// guarda en el documento de su carpeta, para que el botón "Material de
+// impresión" no tenga que adivinar por el nombre del archivo.
+//
+// Solo analiza PDFs que YA están registrados en Firestore (colección
+// "carpetas") — no se puede pedir analizar un archivo cualquiera de Drive.
+//
+// Body: { items: [{ carpetaId, fileId }, ...] }  (máx. 8 por llamada)
+// Respuesta: { ok, resultados: { [fileId]: { paginas, formatos, aprox } | { error } | null } }
+export async function POST(request) {
   try {
-    const drive = getDriveClient();
-    const snap = await adminDb.collection("eventos").orderBy("timestamp", "desc").limit(n).get();
-    const cambios = [];
-    let revisados = 0;
-
-    for (const d of snap.docs) {
-      const e = d.data();
-      if (!e.itemId || !e.timestamp || !e.timestamp.toDate) continue;
-      revisados++;
-      let iso = null;
-      try {
-        const r = await drive.files.get({
-          fileId: e.itemId,
-          fields: "createdTime,modifiedTime,trashedTime",
-          supportsAllDrives: true,
-        });
-        if (/subido|copiado|creada/.test(e.tipo)) iso = r.data.createdTime;
-        else if (/reemplazado/.test(e.tipo)) iso = r.data.modifiedTime;
-        else if (/borrad/.test(e.tipo)) iso = r.data.trashedTime;
-      } catch {
-        // archivo borrado del todo o sin acceso: se deja como está
-      }
-      if (!iso) continue;
-      const real = new Date(iso);
-      const actual = e.timestamp.toDate();
-      const difMin = (actual.getTime() - real.getTime()) / 60000;
-      // Solo se corrige si la hora guardada es posterior a la real (hora de sync) y es de hoy/ayer
-      if (difMin > 2 && difMin < 60 * 48) {
-        await d.ref.update({ timestamp: real });
-        cambios.push({ item: e.item, tipo: e.tipo, antes: actual.toISOString(), ahora: real.toISOString() });
-      }
+    const { items } = await request.json();
+    if (!Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ ok: false, error: "Falta items" }, { status: 400 });
     }
-    return NextResponse.json({ ok: true, revisados, corregidos: cambios.length, cambios });
+    const pedidos = items
+      .filter((i) => i && typeof i.carpetaId === "string" && typeof i.fileId === "string")
+      .slice(0, MAX_POR_LLAMADA);
+
+    // Leer cada carpeta una sola vez
+    const idsCarpetas = [...new Set(pedidos.map((p) => p.carpetaId))];
+    const docs = {};
+    await Promise.all(
+      idsCarpetas.map(async (id) => {
+        const snap = await adminDb.collection("carpetas").doc(id).get();
+        if (snap.exists) docs[id] = { ref: snap.ref, archivos: snap.data().archivos || [] };
+      })
+    );
+
+    // Solo PDFs que de verdad existen en esa carpeta
+    const validos = pedidos.filter((p) => {
+      const d = docs[p.carpetaId];
+      return d && d.archivos.some((a) => a.id === p.fileId && a.tipo === "pdf");
+    });
+
+    const resultados = {};
+    const tiempo = validos.length === 1 ? TIMEOUT_PDF_SOLO_MS : TIMEOUT_PDF_MS;
+    await Promise.all(
+      validos.map(async (p) => {
+        resultados[p.fileId] = await conTiempoMaximo(analizarPdf(p.fileId, tiempo - 2000), tiempo);
+      })
+    );
+
+    // Guardar (1 escritura por carpeta)
+    const carpetasConCambios = new Set();
+    for (const p of validos) {
+      const r = resultados[p.fileId];
+      if (!r) continue; // se pasó del tiempo: se reintenta en la próxima exportación
+      const d = docs[p.carpetaId];
+      d.archivos = d.archivos.map((a) => {
+        if (a.id !== p.fileId) return a;
+        if (r.error) return { ...a, errorFormato: r.error };
+        return { ...a, paginas: r.paginas, formatos: r.formatos, aprox: r.aprox || null, tamanos: r.tamanos || null, vFormato: r.v || 4, errorFormato: null };
+      });
+      carpetasConCambios.add(p.carpetaId);
+    }
+    await Promise.all(
+      [...carpetasConCambios].map((id) => docs[id].ref.update({ archivos: docs[id].archivos }))
+    );
+
+    return NextResponse.json({ ok: true, resultados });
   } catch (err) {
-    console.error("Error reparando horas:", err);
+    console.error("Error en analizar-formatos:", err);
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
 }
