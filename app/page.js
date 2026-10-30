@@ -2140,6 +2140,9 @@ export default function Page() {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 13, color: "#F4F8FC", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
                         <strong>{e.usuario || "Usuario"}</strong>
+                        {e.ultimoModificador && /^(No identificado|Desconocido)/.test(e.usuario || "") && (
+                          <span style={{ fontSize: 11, color: "#AFCBE3" }}>(última modificación en Drive: {e.ultimoModificador})</span>
+                        )}
                         <span style={{ fontSize: 10.5, fontWeight: 800, padding: "2px 9px", borderRadius: 10, background: color + "33", border: `1px solid ${color}`, color, textTransform: "uppercase", letterSpacing: 0.4 }}>
                           {ACCION_CORTA[e.tipo] || e.tipo}
                         </span>
@@ -2879,6 +2882,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande, areasValid
   const [eventosDelDia, setEventosDelDia] = useState(null);
   const [exportandoPdfDia, setExportandoPdfDia] = useState(false);
   const [menuPdfDiaAbierto, setMenuPdfDiaAbierto] = useState(false);
+  const [rangoHoras, setRangoHoras] = useState(0); // 0 = todo el día; 3 o 5 = solo las últimas N horas (solo hoy)
 
   useEffect(() => {
     if (!tooltip) {
@@ -2936,6 +2940,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande, areasValid
   async function abrirDetalleDia(d) {
     setDiaSeleccionado(d);
     setEventosDelDia(null);
+    setRangoHoras(0);
     try {
       const inicioUTC = new Date(`${d.key}T05:00:00.000Z`);
       const finUTC = new Date(inicioUTC.getTime() + 24 * 60 * 60 * 1000);
@@ -2962,14 +2967,28 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande, areasValid
   // areaNombre = null → todo el proyecto; si no, solo esa carpeta madre
   function exportarPdfDia(areaNombre = null) {
     if (!diaSeleccionado || !eventosDelDia || eventosDelDia.length === 0) return;
-    const lista = areaNombre ? eventosDelDia.filter((ev) => areaDeEvento(ev) === areaNombre) : eventosDelDia;
+    let lista = areaNombre ? eventosDelDia.filter((ev) => areaDeEvento(ev) === areaNombre) : eventosDelDia;
+    // Rango opcional: solo las últimas 3 o 5 horas (solo aplica al día de hoy)
+    const horas = diaSeleccionado.key === fechaLimaISO(new Date()) ? rangoHoras : 0;
+    if (horas > 0) {
+      const desde = Date.now() - horas * 60 * 60 * 1000;
+      lista = lista.filter((ev) => ev.timestamp?.toDate && ev.timestamp.toDate().getTime() >= desde);
+      if (lista.length === 0) {
+        alert(`No hay actividad en las últimas ${horas} horas.`);
+        return;
+      }
+    }
     if (lista.length === 0) return;
+    const tituloFecha = horas > 0
+      ? `${formatearFechaLarga(diaSeleccionado.fecha)} — últimas ${horas} horas`
+      : formatearFechaLarga(diaSeleccionado.fecha);
+    const claveArchivo = horas > 0 ? `${diaSeleccionado.key}_ultimas_${horas}h` : diaSeleccionado.key;
     setMenuPdfDiaAbierto(false);
     setExportandoPdfDia(true);
     // pequeña pausa para que el botón muestre "Generando..." antes de armar el PDF
     setTimeout(() => {
       try {
-        generarReporteActividadDiaPDF(formatearFechaLarga(diaSeleccionado.fecha), diaSeleccionado.key, lista, { areaNombre });
+        generarReporteActividadDiaPDF(tituloFecha, claveArchivo, lista, { areaNombre });
       } catch (err) {
         alert(`No se pudo generar el PDF: ${err.message}`);
       } finally {
@@ -3131,6 +3150,26 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande, areasValid
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                {diaSeleccionado.key === fechaLimaISO(new Date()) && (
+                  <select
+                    value={rangoHoras}
+                    onChange={(e) => setRangoHoras(Number(e.target.value))}
+                    style={{
+                      fontSize: 13,
+                      padding: "7px 10px",
+                      borderRadius: 8,
+                      border: "1.5px solid #2E9FD8",
+                      background: "#06182B",
+                      color: "#F4F8FC",
+                      cursor: "pointer",
+                    }}
+                    title="Rango de horas que se exporta en el PDF"
+                  >
+                    <option value={0}>Todo el día</option>
+                    <option value={3}>Últimas 3 horas</option>
+                    <option value={5}>Últimas 5 horas</option>
+                  </select>
+                )}
                 <div style={{ position: "relative" }}>
                   <button
                     onClick={() => setMenuPdfDiaAbierto((v) => !v)}
@@ -3274,7 +3313,7 @@ function ActividadHeatmap({ actividadPorDia, diasCustom = 84, grande, areasValid
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 14, color: "#F4F8FC" }}>
-                            <strong>{ev.usuario || "Usuario"}</strong> <span style={{ color }}>{EVENTO_LABEL[ev.tipo] || ev.tipo}</span> <strong style={{ color: "#2E9FD8" }}>{ev.item}</strong>
+                            <strong>{ev.usuario || "Usuario"}</strong>{ev.ultimoModificador && /^(No identificado|Desconocido)/.test(ev.usuario || "") ? <span style={{ fontSize: 12, color: "#AFCBE3" }}> (última modificación en Drive: {ev.ultimoModificador})</span> : null} <span style={{ color }}>{EVENTO_LABEL[ev.tipo] || ev.tipo}</span> <strong style={{ color: "#2E9FD8" }}>{ev.item}</strong>
                           </div>
                           {ev.ruta && (
                             <div style={{ fontSize: 12, color: "#AFCBE3", marginTop: 3, wordBreak: "break-all" }}>
